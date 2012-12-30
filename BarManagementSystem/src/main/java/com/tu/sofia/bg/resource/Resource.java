@@ -7,6 +7,7 @@ package com.tu.sofia.bg.resource;
  * 
  */
 public abstract class Resource {
+	public static final String TEST_PATH = "/test";
 	public static final String BARMAN_PATH = "/barman";
 	public static final String WAITER_PATH = "/waiter";
 	public static final String MANAGER_PATH = "/manager";

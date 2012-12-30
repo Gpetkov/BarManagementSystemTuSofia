@@ -1,5 +1,5 @@
 package com.tu.sofia.bg.resource;
 
-public class WaiterResource {
+public class WaiterResource extends Resource{
 
 }
