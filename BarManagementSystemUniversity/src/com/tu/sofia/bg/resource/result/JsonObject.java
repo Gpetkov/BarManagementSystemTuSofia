@@ -6,24 +6,21 @@ package com.tu.sofia.bg.resource.result;
  * @author GPetkov
  * 
  */
-public class JsonObject implements Jsonable
-{
+public class JsonObject implements Jsonable {
 	/**
 	 * This method serialize an object to Json
 	 * 
 	 */
 	@Override
-	public String toJson() 
-	{
+	public String toJson() {
 		return JsonObject.gson.toJson(this);
 	}
-	
+
 	/**
 	 * This method deserialize Json to Java Object
 	 * 
 	 */
-	public static <T> T parseJson(String json, Class<T> classType)
-	{
+	public static <T> T parseJson(String json, Class<T> classType) {
 		return JsonObject.gson.fromJson(json, classType);
 	}
 }

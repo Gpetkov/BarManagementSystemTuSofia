@@ -9,6 +9,14 @@ import com.google.gson.Gson;
  * 
  */
 public interface Jsonable {
+	/**
+	 * This is gson object for all Jsonables
+	 * 
+	 */
 	Gson gson = new Gson();
+	/**
+	 * This method represents converting from object to json
+	 * 
+	 */
 	String toJson();
 }
