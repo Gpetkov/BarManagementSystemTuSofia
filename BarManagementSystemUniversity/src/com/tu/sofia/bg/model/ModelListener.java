@@ -24,7 +24,6 @@ public class ModelListener {
 
 		// set dateCreated and dateUpdated fields
 		Date now = new Date();
-
 		if (modelBase.getDateCreated() == null) {
 			modelBase.setDateCreated(now);
 		}

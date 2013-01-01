@@ -1,5 +1,7 @@
 package com.tu.sofia.bg.model;
 
+import java.util.List;
+
 /**
  * This class represent's a current User in the system
  * 
@@ -13,6 +15,7 @@ public class User extends ModelBase {
 	private String userName;
 	private String password;
 	private String role;
+	private List<Order> orders;
 
 	/**
 	 * @return User's first name
@@ -89,6 +92,23 @@ public class User extends ModelBase {
 	public void setRole(String role) {
 		this.role = role;
 	}
+
+	/**
+	 * @return User's orders
+	 * 
+	 */
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
+	/**
+	 * @param orders User's orders
+	 * 
+	 */
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
+	}
+
 	/**
 	 * @return User's id
 	 * 

@@ -1,6 +1,6 @@
 package com.tu.sofia.bg.model;
 
-import java.sql.Date;
+import java.util.List;
 
 /**
  * This class represent's current customer order
@@ -14,7 +14,7 @@ public class Order {
 	private Table table;
 	private User waiter;
 	private User barman;
-	//private Date createDate;
+	private List<Item> items;
 
 	/**
 	 * @return The order's status
@@ -76,21 +76,23 @@ public class Order {
 	public void setBarman(User barman) {
 		this.barman = barman;
 	}
+
 	/**
-	 * @return The date of create for order
+	 * @return The order's items
 	 * 
 	 */
-//	public Date getCreateDate() {
-//		return createDate;
-//	}
-//	/**
-//	 * @param createDate
-//	 *            The date of create for order
-//	 * 
-//	 */
-//	public void setCreateDate(Date createDate) {
-//		this.createDate = createDate;
-//	}
+	public List<Item> getItems() {
+		return items;
+	}
+
+	/**
+	 * @param items
+	 *            The order's items
+	 * 
+	 */
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
 	/**
 	 * @return Order's id
 	 * 

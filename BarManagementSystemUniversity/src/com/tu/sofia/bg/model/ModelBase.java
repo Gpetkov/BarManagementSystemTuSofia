@@ -30,7 +30,7 @@ public abstract class ModelBase {
 
 	@Version
 	@Column(name = "version")
-	private Integer version;
+	private Long version = 1L;
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "created_by_user_id")
@@ -69,18 +69,18 @@ public abstract class ModelBase {
 	 * @return Current Version
 	 * 
 	 */
-	public Integer getVersion() {
+	public Long getVersion() {
 		return version;
 	}
 
-	/**
-	 * @param version
-	 *            Current Version
-	 * 
-	 */
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+	// /**
+	// * @param version
+	// * Current Version
+	// *
+	// */
+	// public void setVersion(Long version) {
+	// this.version = version;
+	// }
 
 	/**
 	 * @return The user created the object
