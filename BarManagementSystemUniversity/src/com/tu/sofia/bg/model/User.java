@@ -100,9 +100,10 @@ public class User extends ModelBase {
 	public List<Order> getOrders() {
 		return orders;
 	}
-	
+
 	/**
-	 * @param orders User's orders
+	 * @param orders
+	 *            User's orders
 	 * 
 	 */
 	public void setOrders(List<Order> orders) {
