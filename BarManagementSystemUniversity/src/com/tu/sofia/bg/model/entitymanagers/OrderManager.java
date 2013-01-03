@@ -6,80 +6,80 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
-import com.tu.sofia.bg.model.Table;
+import com.tu.sofia.bg.model.Order;
 
-public class TableManager
+public class OrderManager
 {
     private EntityManager em;
 
-    public TableManager(EntityManagerFactory emf)
+    public OrderManager(EntityManagerFactory emf)
     {
         em = emf.createEntityManager();
     }
 
     /**
-     * Method used to create table.
+     * Method used to create Order.
      * 
-     * @param table Current table which have to be store in a database
+     * @param Order Current Order which have to be store in a database
      */
-    public void createTable(Table table)
+    public void createOrder(Order order)
     {
         System.out.println("Creation");
         em.getTransaction().begin();
         // Persist entity in persistence context
-        em.persist(table);
+        em.persist(order);
         // Commit Transaction
         em.getTransaction().commit();
-        System.out.println("Table created successfully");
+        System.out.println("Order created successfully");
     }
 
     /**
-     * Method used for search table by id
+     * Method used for search Order by id
      * 
-     * @param id Current table's id
+     * @param id Current Order's id
      */
-    public Table searchById(Integer id)
+    public Order searchById(Integer id)
     {
         // Method used to find data
-        return em.find(Table.class, id);
+        return em.find(Order.class, id);
     }
 
     /**
-     * Method used for updating the current table
+     * Method used for updating the current Order
      * 
-     * @param table Current table
+     * @param Order Current Order
      */
-    public void updateTable(Table table)
+    public void updateOrder(Order order)
     {
         System.out.println("Update: ");
         em.getTransaction().begin();
-        em.merge(table);
+        em.merge(order);
         em.getTransaction().commit();
         System.out.println("Updated successfully");
     }
 
     /**
-     * Method used for removing the current table
+     * Method used for removing the current Order
      * 
-     * @param table Current table
+     * @param order Current Order
      */
-    public void removeTable(Table table)
+    public void removeOrder(Order order)
     {
         System.out.println("Remove: ");
         em.getTransaction().begin();
-        em.remove(table);
+        em.remove(order);
         em.getTransaction().commit();
         System.out.println("Removed successfully");
     }
 
     /**
-     * Method used for getting all tables
+     * Method used for getting all Orders
      * 
      */
     @SuppressWarnings("rawtypes")
-    public List getAllTables()
+    public List getAllOrders()
     {
-        Query query = em.createQuery("select t from Table t");
+        Query query = em.createQuery("select i from Order i");
         List result = query.getResultList();
         return result;
     }

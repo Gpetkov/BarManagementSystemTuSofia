@@ -6,13 +6,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
-import com.tu.sofia.bg.model.Table;
+import com.tu.sofia.bg.model.User;
 
-public class TableManager
+public class UserManager
 {
     private EntityManager em;
 
-    public TableManager(EntityManagerFactory emf)
+    public UserManager(EntityManagerFactory emf)
     {
         em = emf.createEntityManager();
     }
@@ -20,67 +20,69 @@ public class TableManager
     /**
      * Method used to create table.
      * 
-     * @param table Current table which have to be store in a database
+     * @param user Current user which have to be store in a database
      */
-    public void createTable(Table table)
+    public void createUser(User user)
     {
         System.out.println("Creation");
         em.getTransaction().begin();
         // Persist entity in persistence context
-        em.persist(table);
+        em.persist(user);
         // Commit Transaction
         em.getTransaction().commit();
-        System.out.println("Table created successfully");
+        System.out.println("User created successfully");
     }
 
     /**
-     * Method used for search table by id
+     * Method used for search an user by id
      * 
-     * @param id Current table's id
+     * @param id Current user's id
      */
-    public Table searchById(Integer id)
+    public User searchUserById(Integer id)
     {
-        // Method used to find data
-        return em.find(Table.class, id);
+        // Method used to find user by id
+        return em.find(User.class, id);
     }
 
     /**
-     * Method used for updating the current table
+     * Method used for updating the User
      * 
-     * @param table Current table
+     * @param user Current user
      */
-    public void updateTable(Table table)
+    public void updateUser(User user)
     {
         System.out.println("Update: ");
         em.getTransaction().begin();
-        em.merge(table);
+        em.merge(user);
         em.getTransaction().commit();
         System.out.println("Updated successfully");
     }
 
     /**
-     * Method used for removing the current table
+     * Method used for removing the User
      * 
-     * @param table Current table
+     * @param user Current user
      */
-    public void removeTable(Table table)
+    public void removeUser(User user)
     {
         System.out.println("Remove: ");
         em.getTransaction().begin();
-        em.remove(table);
+        em.remove(user);
         em.getTransaction().commit();
-        System.out.println("Removed successfully");
+        System.out.println("User removed successfully");
     }
 
     /**
-     * Method used for getting all tables
+     * Method used for getting all Users
      * 
      */
     @SuppressWarnings("rawtypes")
-    public List getAllTables()
+    public List getAllUsers(User user)
     {
-        Query query = em.createQuery("select t from Table t");
+        Query query = em.createQuery("select u from User u");
+
         List result = query.getResultList();
+
         return result;
     }
 
