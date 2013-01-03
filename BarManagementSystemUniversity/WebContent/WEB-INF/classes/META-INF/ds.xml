@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+	<local-tx-datasource>
+		<jndi-name>BarManagementSystemDS</jndi-name>
+		<connection-url>jdbc:postgresql://localhost/BAR_MANAGEMENT_SYSTEM_DB
+		</connection-url>
+		<driver-class>org.postgresql.Driver</driver-class>
+		<user-name>postgres</user-name>
+		<password>121208014</password>
+	</local-tx-datasource>
+</datasources>
