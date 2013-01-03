@@ -20,118 +20,113 @@ import javax.persistence.TemporalType;
  * 
  */
 @MappedSuperclass
-@EntityListeners({ ModelListener.class })
-public abstract class ModelBase
-{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, updatable = false)
-    private Integer id;
+@EntityListeners({ModelListener.class})
+public abstract class ModelBase {
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "created_by_user_id")
-    private User createdByUser;
+	private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "updated_by_user_id ")
-    private User updatedByUser;
+//	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//	@JoinColumn(name = "created_by_user_id")
+//	private User createdByUser;
+//
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name = "updated_by_user_id ")
+//	private User updatedByUser;
 
-    @Temporal(value = TemporalType.DATE)
-    @Column(name = "date_created")
-    private Date dateCreated;
+	@Temporal(value = TemporalType.DATE)
+	@Column(name = "date_created")
+	private Date dateCreated;
 
-    @Temporal(value = TemporalType.DATE)
-    @Column(name = "date_updated")
-    private Date dateUpdated;
+	@Temporal(value = TemporalType.DATE)
+	@Column(name = "date_updated")
+	private Date dateUpdated;
 
-    /**
-     * @return current id
-     * 
-     */
-    public Integer getId()
-    {
-        return id;
-    }
+	/**
+	 * @return current id
+	 * 
+	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", unique = true, updatable = false)
+	public Integer getId() {
+		return id;
+	}
 
-    /**
-     * @param id currentId
-     * 
-     */
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	/**
+	 * @param id
+	 *            currentId
+	 * 
+	 */
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    /**
-     * @return The user created the object
-     * 
-     */
-    public User getCreatedByUser()
-    {
-        return createdByUser;
-    }
+//	/**
+//	 * @return The user created the object
+//	 * 
+//	 */
+//	public User getCreatedByUser() {
+//		return createdByUser;
+//	}
+//
+//	/**
+//	 * @param createdByUser
+//	 *            The user created the object
+//	 * 
+//	 */
+//	public void setCreatedByUser(User createdByUser) {
+//		this.createdByUser = createdByUser;
+//	}
 
-    /**
-     * @param createdByUser The user created the object
-     * 
-     */
-    public void setCreatedByUser(User createdByUser)
-    {
-        this.createdByUser = createdByUser;
-    }
+//	/**
+//	 * @return The user updated the object
+//	 * 
+//	 */
+//	public User getUpdatedByUser() {
+//		return updatedByUser;
+//	}
+//
+//	/**
+//	 * @param updatedByUser
+//	 *            The user updated the object
+//	 * 
+//	 */
+//	public void setUpdatedByUser(User updatedByUser) {
+//		this.updatedByUser = updatedByUser;
+//	}
 
-    /**
-     * @return The user updated the object
-     * 
-     */
-    public User getUpdatedByUser()
-    {
-        return updatedByUser;
-    }
+	/**
+	 * @return The date of create
+	 * 
+	 */
+	public Date getDateCreated() {
+		return dateCreated;
+	}
 
-    /**
-     * @param updatedByUser The user updated the object
-     * 
-     */
-    public void setUpdatedByUser(User updatedByUser)
-    {
-        this.updatedByUser = updatedByUser;
-    }
+	/**
+	 * @param dateCreated
+	 *            The date of create
+	 * 
+	 */
+	public void setDateCreated(Date dateCreated) {
+		this.dateCreated = dateCreated;
+	}
 
-    /**
-     * @return The date of create
-     * 
-     */
-    public Date getDateCreated()
-    {
-        return dateCreated;
-    }
+	/**
+	 * @return The date of update
+	 * 
+	 */
+	public Date getDateUpdated() {
+		return dateUpdated;
+	}
 
-    /**
-     * @param dateCreated The date of create
-     * 
-     */
-    public void setDateCreated(Date dateCreated)
-    {
-        this.dateCreated = dateCreated;
-    }
-
-    /**
-     * @return The date of update
-     * 
-     */
-    public Date getDateUpdated()
-    {
-        return dateUpdated;
-    }
-
-    /**
-     * @param dateUpdated The date of update
-     * 
-     */
-    public void setDateUpdated(Date dateUpdated)
-    {
-        this.dateUpdated = dateUpdated;
-    }
+	/**
+	 * @param dateUpdated
+	 *            The date of update
+	 * 
+	 */
+	public void setDateUpdated(Date dateUpdated) {
+		this.dateUpdated = dateUpdated;
+	}
 
 }

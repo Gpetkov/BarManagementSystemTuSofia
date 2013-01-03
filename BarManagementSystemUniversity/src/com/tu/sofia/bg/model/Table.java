@@ -19,7 +19,7 @@ import javax.persistence.NamedQuery;
  * 
  */
 @Entity
-@javax.persistence.Table(name = "TABLE")
+@javax.persistence.Table
 @NamedQueries({ @NamedQuery(name = "Table.findAll", query = "SELECT t FROM TABLE t"),
         @NamedQuery(name = "Table.findByTableId", query = "SELECT t FROM TABLE t WHERE t.TB_ID = :tableId"), })
 @AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "TBL_ID")),
@@ -27,7 +27,7 @@ import javax.persistence.NamedQuery;
         @AttributeOverride(name = "dateUpdated", column = @Column(name = "TBL_DATE_UPDATED")) })
 @AssociationOverrides({ @AssociationOverride(name = "createdByUser", joinColumns = @JoinColumn(name = "TBL_CREATED_BY_USER_ID")),
         @AssociationOverride(name = "updatedByUser", joinColumns = @JoinColumn(name = "TBL_UPDATED_BY_USER_ID")) })
-public class Table implements Serializable
+public class Table extends ModelBase implements Serializable
 {
     /**
      * Default serial version

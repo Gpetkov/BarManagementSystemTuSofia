@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-configuration PUBLIC
     "-//Hibernate/Hibernate Configuration DTD//EN"
     "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-
+<hibernate-configuration>
   <session-factory>
     <!-- Database connection settings -->
     <property name="connection.driver_class">org.postgresql.Driver</property>
@@ -30,4 +30,4 @@
     <!-- Names the anotated entity class -->
     <mapping class="com.tu.sofi.bg.model.Table"/>
   </session-factory>
-
+</hibernate-configuration>

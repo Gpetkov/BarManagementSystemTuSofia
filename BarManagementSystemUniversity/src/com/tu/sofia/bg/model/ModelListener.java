@@ -15,12 +15,12 @@ public class ModelListener {
 			currentUser = (User) modelBase;
 		}
 
-		if (currentUser != null) {
-			if (modelBase.getCreatedByUser() == null) {
-				modelBase.setCreatedByUser(currentUser);
-			}
-			modelBase.setUpdatedByUser(currentUser);
-		}
+//		if (currentUser != null) {
+//			if (modelBase.getCreatedByUser() == null) {
+//				modelBase.setCreatedByUser(currentUser);
+//			}
+//			modelBase.setUpdatedByUser(currentUser);
+//		}
 
 		// set dateCreated and dateUpdated fields
 		Date now = new Date();
