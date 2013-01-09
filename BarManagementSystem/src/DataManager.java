@@ -1,5 +1,4 @@
 
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -8,9 +7,8 @@ import javax.persistence.PersistenceContext;
 public class DataManager {
 	@PersistenceContext(name = "BarManagementSystem")
 	EntityManager em;
-	
-	public void createTest(TestEntity t)
-	{
+
+	public void createTest(TestEntity t) {
 		em.persist(t);
 	}
 }

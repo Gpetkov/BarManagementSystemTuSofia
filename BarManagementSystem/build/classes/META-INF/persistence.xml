@@ -3,6 +3,11 @@
 	<persistence-unit name="BarManagementSystem" transaction-type="JTA">
 	    <provider>org.hibernate.ejb.HibernatePersistence</provider>
 	    <jta-data-source>jdbc/BAR_MANAGEMENT_SYSTEM</jta-data-source>
+	    <class>com.tu.university.barmanagement.model.Item</class>
+	    <class>com.tu.university.barmanagement.model.Order</class>
+	    <class>com.tu.university.barmanagement.model.OrderStatus</class>
+	    <class>com.tu.university.barmanagement.model.Table</class>
+	    <class>com.tu.university.barmanagement.model.User</class>
 	    <properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 	    </properties>

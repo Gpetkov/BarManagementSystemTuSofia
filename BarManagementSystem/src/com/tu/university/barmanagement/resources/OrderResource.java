@@ -13,9 +13,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.tu.university.barmanagement.managers.OrderStatusManager;
+import com.tu.university.barmanagement.model.User;
 
 @Stateless
-@Path("orderstatus")
+@Path("order")
 public class OrderResource {
 	@Context
 	private UriInfo context;
@@ -57,16 +58,8 @@ public class OrderResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public String addOrderStatus(String value) {
-		// final Result<OrderStatus> result1 = new Result<OrderStatus>();
-		// OrderStatus os = new OrderStatus();
-		// os.setValue("dobre");
-		// result1.setData(os);
-		// final OrderStatus resOrderStatus = JsonObject.parseJson(value,
-		// OrderStatus.class);
-		// final Result<OrderStatus> result2 = new Result<OrderStatus>();
-		// result2.setData(resOrderStatus);
-		// em.saveOrderStatus(os);
-		// return result2.toJson();
+//		User user = new User();
+//		user.set
 		return "";
 	}
 }

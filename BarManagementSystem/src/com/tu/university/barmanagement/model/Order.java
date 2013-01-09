@@ -1,145 +1,156 @@
 package com.tu.university.barmanagement.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 /**
- * This class represent's current customer order
- * 
- * @author GPetkov
+ * The persistent class for the bm_order database table.
  * 
  */
-
 @Entity
-@Table(name = "ORDER")
-@AttributeOverrides({
-		@AttributeOverride(name = "id", column = @Column(name = "ORD_ID")),
-		@AttributeOverride(name = "dateCreated", column = @Column(name = "ORD_DATE_CREATED")),
-		@AttributeOverride(name = "dateUpdated", column = @Column(name = "ORD_DATE_UPDATED"))})
-@AssociationOverrides({
-		@AssociationOverride(name = "createdByUser", joinColumns = @JoinColumn(name = "ORD_CREATED_BY_USER_ID")),
-		@AssociationOverride(name = "updatedByUser", joinColumns = @JoinColumn(name = "ORD_UPDATED_BY_USER_ID"))})
-public class Order extends ModelBase implements Serializable {
-	/**
-	 * Default serial version id
-	 */
+@javax.persistence.Table(name = "bm_order")
+public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ORDR_STATUS_ID")
-	private OrderStatus status;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ord_id")
+	private Integer ordId;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ORDR_TABLE_ID")
-	private com.tu.university.barmanagement.model.Table table;
+	@Column(name = "ord_date_created")
+	private Timestamp ordDateCreated;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ORDR_BARMAN_ID")
-	private User barman;
+	@Column(name = "ord_date_updated")
+	private Timestamp ordDateUpdated;
 
-//	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "orders")
-//	@Cascade(CascadeType.SAVE_UPDATE)
-	private List<Item> items;
+	// bi-directional many-to-one association to BmOrderStatus
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ordr_status_id")
+	private OrderStatus bmOrderStatus;
 
-	/**
-	 * @return The order's status
-	 * 
-	 */
-	public OrderStatus getStatus() {
-		return status;
+	// bi-directional many-to-one association to BmTable
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ordr_table_id")
+	private Table bmTable;
+
+	// bi-directional many-to-one association to BmUser
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ordr_barman_id")
+	private User bmUser1;
+
+	// bi-directional many-to-one association to BmUser
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ord_created_by_bm_user_id")
+	private User bmUser2;
+
+	// bi-directional many-to-one association to BmUser
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ord_updated_by_bm_user_id")
+	private User bmUser3;
+
+	// bi-directional many-to-many association to BmItem
+	@ManyToMany
+	@JoinTable(name = "bm_order_to_bm_item", joinColumns = {@JoinColumn(name = "ordr_id")}, inverseJoinColumns = {@JoinColumn(name = "itm_id")})
+	private List<Item> bmItems;
+
+	@PrePersist
+	void onCreate() {
+		this.setOrdDateCreated(new Timestamp((new Date()).getTime()));
 	}
 
-	/**
-	 * @param status
-	 *            Order's status
-	 * 
-	 */
-	public void setStatus(OrderStatus status) {
-		this.status = status;
+	@PreUpdate
+	void onUpdate() {
+		this.setOrdDateUpdated(new Timestamp((new Date()).getTime()));
 	}
 
-	/**
-	 * @return Order's table
-	 * 
-	 */
-	public com.tu.university.barmanagement.model.Table getTable() {
-		return table;
+	public Order() {
 	}
 
-	/**
-	 * @param table
-	 *            Order's table
-	 * 
-	 */
-	public void setTable(com.tu.university.barmanagement.model.Table table) {
-		this.table = table;
+	public Integer getOrdId() {
+		return this.ordId;
 	}
 
-	// /**
-	// * @return The order's waiter
-	// *
-	// */
-	// public User getWaiter() {
-	// return waiter;
-	// }
-	// /**
-	// * @param waiter
-	// * The order's waiter
-	// *
-	// */
-	// public void setWaiter(User waiter) {
-	// this.waiter = waiter;
-	// }
-	/**
-	 * @return The order's barman
-	 * 
-	 */
-	public User getBarman() {
-		return barman;
+	public void setOrdId(Integer ordId) {
+		this.ordId = ordId;
 	}
 
-	/**
-	 * @param barman
-	 *            The order's barman
-	 * 
-	 */
-	public void setBarman(User barman) {
-		this.barman = barman;
+	public Timestamp getOrdDateCreated() {
+		return this.ordDateCreated;
 	}
 
-	/**
-	 * @return The order's items
-	 * 
-	 */
-	public List<Item> getItems() {
-		return items;
+	public void setOrdDateCreated(Timestamp ordDateCreated) {
+		this.ordDateCreated = ordDateCreated;
 	}
 
-	/**
-	 * @param items
-	 *            The order's items
-	 * 
-	 */
-	public void setItems(List<Item> items) {
-		this.items = items;
+	public Timestamp getOrdDateUpdated() {
+		return this.ordDateUpdated;
 	}
-	// /**
-	// * @return Order's id
-	// *
-	// */
-	// public Integer getId() {
-	// return id;
-	// }
+
+	public void setOrdDateUpdated(Timestamp ordDateUpdated) {
+		this.ordDateUpdated = ordDateUpdated;
+	}
+
+	public OrderStatus getBmOrderStatus() {
+		return this.bmOrderStatus;
+	}
+
+	public void setBmOrderStatus(OrderStatus bmOrderStatus) {
+		this.bmOrderStatus = bmOrderStatus;
+	}
+
+	public Table getBmTable() {
+		return this.bmTable;
+	}
+
+	public void setBmTable(Table bmTable) {
+		this.bmTable = bmTable;
+	}
+
+	public User getBmUser1() {
+		return this.bmUser1;
+	}
+
+	public void setBmUser1(User bmUser1) {
+		this.bmUser1 = bmUser1;
+	}
+
+	public User getBmUser2() {
+		return this.bmUser2;
+	}
+
+	public void setBmUser2(User bmUser2) {
+		this.bmUser2 = bmUser2;
+	}
+
+	public User getBmUser3() {
+		return this.bmUser3;
+	}
+
+	public void setBmUser3(User bmUser3) {
+		this.bmUser3 = bmUser3;
+	}
+
+	public List<Item> getBmItems() {
+		return this.bmItems;
+	}
+
+	public void setBmItems(List<Item> bmItems) {
+		this.bmItems = bmItems;
+	}
 
 }

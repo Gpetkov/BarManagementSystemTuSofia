@@ -1,51 +1,126 @@
 package com.tu.university.barmanagement.model;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
+/**
+ * The persistent class for the bm_order_status database table.
+ * 
+ */
 @Entity
-@Table(name = "ORDER_STATUS")
-@AttributeOverrides({
-		@AttributeOverride(name = "id", column = @Column(name = "ORDST_ID")),
-		@AttributeOverride(name = "dateCreated", column = @Column(name = "ORDST_DATE_CREATED")),
-		@AttributeOverride(name = "dateUpdated", column = @Column(name = "ORDST_DATE_UPDATED"))})
-@AssociationOverrides({
-		@AssociationOverride(name = "createdByUser", joinColumns = @JoinColumn(name = "ORDST_CREATED_BY_USER_ID")),
-		@AssociationOverride(name = "updatedByUser", joinColumns = @JoinColumn(name = "ORDST_UPDATED_BY_USER_ID"))})
-public class OrderStatus extends ModelBase implements Serializable {
-
+@javax.persistence.Table(name = "bm_order_status")
+public class OrderStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "ORDRST_VALUE", nullable = false)
-	private String value;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ordst_id")
+	private Integer ordstId;
 
-	/**
-	 * @return Status value
-	 * 
-	 */
-	public String getValue() {
-		return this.value;
+	@Column(name = "ordrst_value")
+	private String ordrstValue;
+
+	@Column(name = "ordst_date_created")
+	private Timestamp ordstDateCreated;
+
+	@Column(name = "ordst_date_updated")
+	private Timestamp ordstDateUpdated;
+
+	// bi-directional many-to-one association to BmOrder
+	@OneToMany(mappedBy = "bmOrderStatus")
+	private List<Order> bmOrders;
+
+	// bi-directional many-to-one association to BmUser
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ordst_created_by_bm_user_id")
+	private User bmUser1;
+
+	// bi-directional many-to-one association to BmUser
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "ordst_updated_by_bm_user_id")
+	private User bmUser2;
+
+	@PrePersist
+	void onCreate() {
+		this.setOrdstDateCreated(new Timestamp((new Date()).getTime()));
 	}
 
-	/**
-	 * @param value
-	 *            Status value
-	 * 
-	 */
-	public void setValue(String value) {
-		this.value = value;
+	@PreUpdate
+	void onUpdate() {
+		this.setOrdstDateUpdated(new Timestamp((new Date()).getTime()));
 	}
-	@Override
-	public String toString() {
-		return "OrderStatus [value=" + value + ", getId()=" + getId()
-				+ ", toString()=" + "]";
+
+	public OrderStatus() {
 	}
+
+	public Integer getOrdstId() {
+		return this.ordstId;
+	}
+
+	public void setOrdstId(Integer ordstId) {
+		this.ordstId = ordstId;
+	}
+
+	public String getOrdrstValue() {
+		return this.ordrstValue;
+	}
+
+	public void setOrdrstValue(String ordrstValue) {
+		this.ordrstValue = ordrstValue;
+	}
+
+	public Timestamp getOrdstDateCreated() {
+		return this.ordstDateCreated;
+	}
+
+	public void setOrdstDateCreated(Timestamp ordstDateCreated) {
+		this.ordstDateCreated = ordstDateCreated;
+	}
+
+	public Timestamp getOrdstDateUpdated() {
+		return this.ordstDateUpdated;
+	}
+
+	public void setOrdstDateUpdated(Timestamp ordstDateUpdated) {
+		this.ordstDateUpdated = ordstDateUpdated;
+	}
+
+	public List<Order> getBmOrders() {
+		return this.bmOrders;
+	}
+
+	public void setBmOrders(List<Order> bmOrders) {
+		this.bmOrders = bmOrders;
+	}
+
+	public User getBmUser1() {
+		return this.bmUser1;
+	}
+
+	public void setBmUser1(User bmUser1) {
+		this.bmUser1 = bmUser1;
+	}
+
+	public User getBmUser2() {
+		return this.bmUser2;
+	}
+
+	public void setBmUser2(User bmUser2) {
+		this.bmUser2 = bmUser2;
+	}
+
 }

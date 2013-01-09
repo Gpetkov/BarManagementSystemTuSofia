@@ -15,7 +15,7 @@ import javax.ws.rs.core.UriInfo;
 import com.tu.university.barmanagement.managers.OrderStatusManager;
 
 @Stateless
-@Path("orderstatus")
+@Path("table")
 public class TableResource {
 	@Context
 	private UriInfo context;

@@ -1,5 +1,4 @@
 
-
 import java.util.Date;
 
 import javax.ejb.EJB;
@@ -12,11 +11,11 @@ import javax.ws.rs.Path;
 public class SimpleService {
 	@EJB
 	DataManager dm;
-	
+
 	@Path("greet")
 	@GET
 	public String doGreet() {
 		dm.createTest(new TestEntity());
-		return "Hello Stranger, the time is "+ new Date();
+		return "Hello Stranger, the time is " + new Date();
 	}
 }

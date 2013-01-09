@@ -1,5 +1,7 @@
 package com.tu.university.barmanagement.resources;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -12,21 +14,24 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
-import com.tu.university.barmanagement.managers.OrderStatusManager;
+import com.tu.university.barmanagement.managers.UserManager;
+import com.tu.university.barmanagement.model.User;
+import com.tu.university.barmanagement.result.JsonObject;
+import com.tu.university.barmanagement.result.Result;
 
 @Stateless
-@Path("orderstatus")
+@Path("userpath")
 public class UserResource {
 	@Context
 	private UriInfo context;
 
 	@EJB
-	OrderStatusManager em;
+	UserManager em;
 	/**
 	 * Default constructor.
 	 */
 	public UserResource() {
-		// TODO Auto-generated constructor stub
+		// nothing to do
 	}
 
 	/**
@@ -36,9 +41,10 @@ public class UserResource {
 	 */
 	@GET
 	@Produces("application/json")
-	public String getJson() {
-		// TODO return proper representation object
-		throw new UnsupportedOperationException();
+	public String geAlltUsers() {
+		Result<List<User>> result = new Result<List<User>>();
+		result.setData(em.getAllUsers());
+		return result.toJson();
 	}
 
 	/**
@@ -56,17 +62,12 @@ public class UserResource {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public String addOrderStatus(String value) {
-		// final Result<OrderStatus> result1 = new Result<OrderStatus>();
-		// OrderStatus os = new OrderStatus();
-		// os.setValue("dobre");
-		// result1.setData(os);
-		// final OrderStatus resOrderStatus = JsonObject.parseJson(value,
-		// OrderStatus.class);
-		// final Result<OrderStatus> result2 = new Result<OrderStatus>();
-		// result2.setData(resOrderStatus);
-		// em.saveOrderStatus(os);
-		// return result2.toJson();
-		return "";
+	public String addOrderStatus(String user) {
+		//final Result<User> result1 = new Result<User>();
+	//	User resultUser = JsonObject.parseJson(user, User.class);
+		
+		User usr = JsonObject.parseJson(user, User.class);
+		em.addUser(usr);
+		return "Hi there " + user;
 	}
 }
