@@ -10,7 +10,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
 @Stateless
-@Path("user")
+@Path("user2")
 public class UserResource {
 	@Context
 	private UriInfo context;
