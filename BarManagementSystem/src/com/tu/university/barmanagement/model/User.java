@@ -55,7 +55,7 @@ public class User implements Serializable {
 	@Column(name = "usr_status")
 	private Integer usrStatus;
 
-	@Column(name = "usr_username")
+	@Column(name = "usr_username", unique = true)
 	private String usrUsername;
 
 	// bi-directional many-to-one association to BmItem
@@ -298,6 +298,16 @@ public class User implements Serializable {
 
 	public void setBmUsers2(List<User> bmUsers2) {
 		this.bmUsers2 = bmUsers2;
+	}
+	
+	public void update(User user)
+	{
+		this.setUsrUsername(user.getUsrUsername());
+		this.setUsrFirstname(user.getUsrFirstname());
+		this.setUsrLastname(user.getUsrLastname());
+		this.setUsrPassoword(user.getUsrPassoword());
+		this.setUsrRole(user.getUsrRole());
+		this.setUsrStatus(user.getUsrStatus());
 	}
 
 }

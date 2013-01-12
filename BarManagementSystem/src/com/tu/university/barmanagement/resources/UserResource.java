@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
+import com.google.gson.JsonSyntaxException;
 import com.tu.university.barmanagement.managers.UserManager;
 import com.tu.university.barmanagement.model.User;
 import com.tu.university.barmanagement.result.JsonObject;
@@ -61,11 +63,12 @@ public class UserResource {
 			result.setMessages(messages);
 			result.setStatus(Result.SUCCESS);
 		} catch (Exception e) {
-			message.setData("Problem occured while getting the Users.");
+			message.setData("Problem occured while retrieving the Users.");
 			message.setStatus(Message.ERROR);
 			messages.add(message);
 			result.setMessages(messages);
 			result.setStatus(Result.FAIL);
+			return result.toJson();
 		}
 		return result.toJson();
 	}
@@ -85,17 +88,23 @@ public class UserResource {
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		Result<User> result = new Result<User>();
-		// User user = em.getUserById(id);
-		// result.setData(user);
 		try {
 			result.setData(em.getUserById(id));
-			message.setData("The User was retrieved successfully.");
-			message.setStatus(Message.INFO);
-			messages.add(message);
-			result.setMessages(messages);
-			result.setStatus(Result.SUCCESS);
+			if (result.getData() == null) {
+				message.setData("The User doesn't exists!");
+				message.setStatus(Message.WARNING);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.SUCCESS);
+			} else {
+				message.setData("The User was retrieved successfully.");
+				message.setStatus(Message.INFO);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.SUCCESS);
+			}
 		} catch (Exception e) {
-			message.setData("Problem occured while getting the User.");
+			message.setData("Problem occured while retrieving the User.");
 			message.setStatus(Message.ERROR);
 			messages.add(message);
 			Message messageException = new Message();
@@ -103,11 +112,12 @@ public class UserResource {
 			messages.add(messageException);
 			result.setMessages(messages);
 			result.setStatus(Result.FAIL);
+			return result.toJson();
 		}
 		return result.toJson();
 	}
 	/**
-	 * PUT method for updating or creating an instance of User
+	 * PUT method for updating or creating an instance of User with
 	 * 
 	 * @param content
 	 *            representation for the resource
@@ -116,9 +126,58 @@ public class UserResource {
 	 * @see Result
 	 */
 	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void putJson(String user) {
-		throw new UnsupportedOperationException();
+	@Path("/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateUser(@PathParam("id") Integer id, String user) {
+		User usrOriginal = null;
+		User usrNew = null;
+		Message message = new Message();
+		List<Message> messages = new ArrayList<Message>();
+		Result<User> result = new Result<User>();
+
+		try {
+			usrOriginal = em.getUserById(id);
+			if (usrOriginal == null) {
+				message.setData("The User doesn't exists!");
+				message.setStatus(Message.WARNING);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.SUCCESS);
+				return result.toJson();
+			} else {
+				usrNew = JsonObject.parseJson(user, User.class);
+				usrOriginal.update(usrNew);
+			}
+		} catch (Exception e) {
+			message.setData("ERROR occured while retrieving the User and reinitialize the new one.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		try {
+			em.updateUser(usrOriginal);
+			message.setData("The User was updated successfully.");
+			message.setStatus(Message.INFO);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.SUCCESS);
+		} catch (Exception e) {
+			message.setData("Problem occured while updating the User.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		return result.toJson();
 	}
 
 	/**
@@ -138,43 +197,56 @@ public class UserResource {
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		final Result<User> result = new Result<User>();
-		// User resultUser = JsonObject.parseJson(user, User.class);
+		// try {
+
+		// } catch (Exception e) {
+		// message.setData("Erro occured while parsing the Json User to object");
+		// message.setStatus(Message.ERROR);
+		// messages.add(message);
+		// result.setMessages(messages);
+		// result.setStatus(Result.FAIL);
+		// return result.toJson();
+		// }
 
 		try {
 			usr = JsonObject.parseJson(user, User.class);
-		} catch (Exception e) {
-			message.setData("Erro occured while parsing the Json User to object");
-			message.setStatus(Message.ERROR);
-			messages.add(message);
-			result.setMessages(messages);
-			result.setStatus(Result.FAIL);
-		}
-
-		if (usr == null) {
-			message.setData("The Json parsing returned a null object");
-			message.setStatus(Message.ERROR);
-			messages.add(message);
-			result.setMessages(messages);
-			result.setStatus(Result.FAIL);
-		} else {
-
-			try {
+			if (usr == null) {
+				message.setData("The Json parsing returned a null object");
+				message.setStatus(Message.ERROR);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.FAIL);
+			} else {
 				em.addUser(usr);
+				System.out.println("After add");
 				message.setData("The User was added successfully.");
 				message.setStatus(Message.INFO);
 				messages.add(message);
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
-			} catch (Exception e) {
-				message.setData("ERROR occured while adding the User.");
-				message.setStatus(Message.ERROR);
-				messages.add(message);
-				result.setMessages(messages);
-				result.setStatus(Result.FAIL);
 			}
+		} catch (JsonSyntaxException e) {
+			message.setData("Erro occured while parsing the Json User to object. Please check the Json syntax.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (EJBTransactionRolledbackException e) {
+			message.setData("The User with Username: \"" + usr.getUsrUsername() + "\" already exists OR there is problem with JPA persist.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (Exception e) {
+
+			message.setData("Unknown ERROR occured while adding the User.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
 		}
-		// User usr = JsonObject.parseJson(user, User.class);
-		// em.addUser(usr);
 		return result.toJson();
 	}
 
@@ -190,13 +262,9 @@ public class UserResource {
 	@DELETE
 	@Path("/{id}")
 	public String removeUser(@PathParam("id") Integer id) {
-		// em.deleteUserById(id);
-
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		Result<User> result = new Result<User>();
-		// User user = em.getUserById(id);
-		// result.setData(user);
 		try {
 			em.deleteUserById(id);
 			message.setData("The User was deleted successfully.");
@@ -213,6 +281,7 @@ public class UserResource {
 			messages.add(messageException);
 			result.setMessages(messages);
 			result.setStatus(Result.FAIL);
+			return result.toJson();
 		}
 		return result.toJson();
 	}
