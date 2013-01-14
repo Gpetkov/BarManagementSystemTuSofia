@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -23,6 +25,7 @@ import javax.persistence.PreUpdate;
  */
 @Entity
 @javax.persistence.Table(name = "bm_order_status")
+@NamedQueries({@NamedQuery(name = "OrderStatus.getAll", query = "Select os from OrderStatus os")})
 public class OrderStatus implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -123,4 +126,7 @@ public class OrderStatus implements Serializable {
 		this.bmUser2 = bmUser2;
 	}
 
+	public void update(OrderStatus orderStaus) {
+		this.setOrdrstValue(orderStaus.getOrdrstValue());
+	}
 }

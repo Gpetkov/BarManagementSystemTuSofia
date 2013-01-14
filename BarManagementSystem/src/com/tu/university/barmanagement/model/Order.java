@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -24,6 +26,7 @@ import javax.persistence.PreUpdate;
  */
 @Entity
 @javax.persistence.Table(name = "bm_order")
+@NamedQueries({@NamedQuery(name = "Order.getAll", query = "Select o from Order o")})
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -152,5 +155,7 @@ public class Order implements Serializable {
 	public void setBmItems(List<Item> bmItems) {
 		this.bmItems = bmItems;
 	}
-
+	public void update(Order order) {
+		//ArrayList<Item>
+	}
 }

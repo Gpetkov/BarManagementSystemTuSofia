@@ -20,4 +20,33 @@
     <url-pattern>/rest/*</url-pattern>
     <url-pattern>/jaxrs/*</url-pattern>
   </servlet-mapping>
+  <security-role>
+      <role-name>manager</role-name>
+</security-role>
+   <security-role>
+      <role-name>barman</role-name>
+</security-role>
+   <security-role>
+      <role-name>waiter</role-name>
+</security-role>
+<login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>file</realm-name>
+</login-config>
+<security-constraint>
+    <display-name>all</display-name>
+    <web-resource-collection>
+        <web-resource-name>all</web-resource-name>
+      <url-pattern>/jaxrs/*</url-pattern>  
+      <http-method>GET</http-method>  
+      <http-method>POST</http-method>
+      <http-method>PUT</http-method>
+      <http-method>DELETE</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+        <role-name>manager</role-name>
+        <role-name>barman</role-name>
+        <role-name>waiter</role-name>
+    </auth-constraint>
+</security-constraint>
 </web-app>

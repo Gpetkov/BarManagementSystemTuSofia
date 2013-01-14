@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.tu.university.barmanagement.managers.OrderStatusManager;
-import com.tu.university.barmanagement.model.User;
 
 @Stateless
 @Path("order")

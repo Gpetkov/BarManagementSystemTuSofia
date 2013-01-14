@@ -8,6 +8,8 @@
 	    <class>com.tu.university.barmanagement.model.OrderStatus</class>
 	    <class>com.tu.university.barmanagement.model.Table</class>
 	    <class>com.tu.university.barmanagement.model.User</class>
+	    <class>com.tu.university.barmanagement.model.BmUserGroup</class>
+	    <class>com.tu.university.barmanagement.model.BmUserGroupPK</class>
 	    <properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />
 	    </properties>

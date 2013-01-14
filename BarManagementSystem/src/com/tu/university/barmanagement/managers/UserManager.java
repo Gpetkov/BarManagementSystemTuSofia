@@ -6,9 +6,6 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.hibernate.exception.ConstraintViolationException;
-import org.postgresql.util.PSQLException;
-
 import com.tu.university.barmanagement.model.User;
 
 @Stateless
@@ -18,16 +15,15 @@ public class UserManager {
 
 	@SuppressWarnings("unchecked")
 	public List<User> getAllUsers() {
-		return em.createNamedQuery("User.getAll").getResultList();
+		return (List<User>) em.createNamedQuery("User.getAll").getResultList();
 	}
 
 	public User getUserById(Integer id) {
-		User user = em.find(User.class, id);
+		User user = (User)em.find(User.class, id);
 		em.flush();
 		return user;
 	}
-	public void addUser(User user) throws ConstraintViolationException,
-			PSQLException {
+	public void addUser(User user) {
 		em.persist(user);
 		em.flush();
 	}
@@ -37,7 +33,7 @@ public class UserManager {
 		em.flush();
 	}
 	public void deleteUserById(Integer id) {
-		User user = this.getUserById(id);
+		User user = (User)this.getUserById(id);
 		if (user != null)
 			em.remove(user);
 	}

@@ -1,5 +1,11 @@
 package com.tu.university.barmanagement.result;
 
+import org.hibernate.proxy.HibernateProxy;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.TypeAdapter;
+
+import com.google.gson.*;
 /**
  * This class represents an object that can be serialized to/from Json
  * 
@@ -8,8 +14,7 @@ package com.tu.university.barmanagement.result;
  */
 public class JsonObject implements Jsonable {
 	/**
-	 * This method serialize an object to Json
-	 * 
+	 * Serialize the current object to Json
 	 */
 	@Override
 	public String toJson() {
@@ -17,8 +22,13 @@ public class JsonObject implements Jsonable {
 	}
 
 	/**
-	 * This method deserialize Json to Java Object
+	 * Deserialize json text to java object
 	 * 
+	 * @param json
+	 *            the json source
+	 * @param classType
+	 *            the type of the java object
+	 * @return the deserialized java object
 	 */
 	public static <T> T parseJson(String json, Class<T> classType) {
 		return JsonObject.gson.fromJson(json, classType);

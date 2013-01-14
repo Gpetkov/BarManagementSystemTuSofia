@@ -117,7 +117,7 @@ public class UserResource {
 		return result.toJson();
 	}
 	/**
-	 * PUT method for updating or creating an instance of User with
+	 * PUT method for updating an instance of User 
 	 * 
 	 * @param content
 	 *            representation for the resource
@@ -197,17 +197,6 @@ public class UserResource {
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		final Result<User> result = new Result<User>();
-		// try {
-
-		// } catch (Exception e) {
-		// message.setData("Erro occured while parsing the Json User to object");
-		// message.setStatus(Message.ERROR);
-		// messages.add(message);
-		// result.setMessages(messages);
-		// result.setStatus(Result.FAIL);
-		// return result.toJson();
-		// }
-
 		try {
 			usr = JsonObject.parseJson(user, User.class);
 			if (usr == null) {

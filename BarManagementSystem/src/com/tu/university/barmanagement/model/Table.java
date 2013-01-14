@@ -13,6 +13,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -23,6 +25,7 @@ import javax.persistence.PreUpdate;
  */
 @Entity
 @javax.persistence.Table(name = "bm_table")
+@NamedQueries({@NamedQuery(name = "Table.getAll", query = "Select t from Table t")})
 public class Table implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -45,12 +48,12 @@ public class Table implements Serializable {
 	private List<Order> bmOrders;
 
 	// bi-directional many-to-one association to BmUser
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tbl_created_by_bm_user_id")
 	private User bmUser1;
 
 	// bi-directional many-to-one association to BmUser
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tbl_updated_by_bm_user_id")
 	private User bmUser2;
 
@@ -123,4 +126,7 @@ public class Table implements Serializable {
 		this.bmUser2 = bmUser2;
 	}
 
+	public void update(Table table) {
+		this.setTblNumber(table.getTblNumber());
+	}
 }

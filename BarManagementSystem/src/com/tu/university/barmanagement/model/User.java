@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,7 +26,9 @@ import javax.persistence.PreUpdate;
  */
 @Entity
 @javax.persistence.Table(name = "bm_user")
-@NamedQueries({@NamedQuery(name = "User.getAll", query = "Select u from User u")})
+@NamedQueries({
+		@NamedQuery(name = "User.getAll", query = "Select u from User u"),
+		@NamedQuery(name = "User.getByUserName", query = "SELECT u from User u WHERE u.usrUsername = :usrUsername")})
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -46,8 +49,8 @@ public class User implements Serializable {
 	@Column(name = "usr_lastname")
 	private String usrLastname;
 
-	@Column(name = "usr_passoword")
-	private String usrPassoword;
+	@Column(name = "usr_password")
+	private String usrPassword;
 
 	@Column(name = "usr_role")
 	private String usrRole;
@@ -59,12 +62,12 @@ public class User implements Serializable {
 	private String usrUsername;
 
 	// bi-directional many-to-one association to BmItem
-	@OneToMany(mappedBy = "bmUser1")
-	private List<Item> bmItems1;
+	//@OneToMany(mappedBy = "bmUser1", fetch = FetchType.EAGER)
+	//private List<Item> bmItems1;
 
 	// bi-directional many-to-one association to BmItem
-	@OneToMany(mappedBy = "bmUser2")
-	private List<Item> bmItems2;
+//	@OneToMany(mappedBy = "bmUser2", fetch=FetchType.EAGER)
+	//private List<Item> bmItems2;
 
 	// bi-directional many-to-one association to BmOrder
 	@OneToMany(mappedBy = "bmUser1")
@@ -164,12 +167,12 @@ public class User implements Serializable {
 		this.usrLastname = usrLastname;
 	}
 
-	public String getUsrPassoword() {
-		return this.usrPassoword;
+	public String getUsrPassword() {
+		return this.usrPassword;
 	}
 
-	public void setUsrPassoword(String usrPassoword) {
-		this.usrPassoword = usrPassoword;
+	public void setUsrPassword(String usrPassword) {
+		this.usrPassword = usrPassword;
 	}
 
 	public String getUsrRole() {
@@ -196,21 +199,21 @@ public class User implements Serializable {
 		this.usrUsername = usrUsename;
 	}
 
-	public List<Item> getBmItems1() {
-		return this.bmItems1;
-	}
-
-	public void setBmItems1(List<Item> bmItems1) {
-		this.bmItems1 = bmItems1;
-	}
-
-	public List<Item> getBmItems2() {
-		return this.bmItems2;
-	}
-
-	public void setBmItems2(List<Item> bmItems2) {
-		this.bmItems2 = bmItems2;
-	}
+//	public List<Item> getBmItems1() {
+//		return this.bmItems1;
+//	}
+//
+//	public void setBmItems1(List<Item> bmItems1) {
+//		this.bmItems1 = bmItems1;
+//	}
+//
+//	public List<Item> getBmItems2() {
+//		return this.bmItems2;
+//	}
+//
+//	public void setBmItems2(List<Item> bmItems2) {
+//		this.bmItems2 = bmItems2;
+//	}
 
 	public List<Order> getBmOrders1() {
 		return this.bmOrders1;
@@ -299,13 +302,12 @@ public class User implements Serializable {
 	public void setBmUsers2(List<User> bmUsers2) {
 		this.bmUsers2 = bmUsers2;
 	}
-	
-	public void update(User user)
-	{
+
+	public void update(User user) {
 		this.setUsrUsername(user.getUsrUsername());
 		this.setUsrFirstname(user.getUsrFirstname());
 		this.setUsrLastname(user.getUsrLastname());
-		this.setUsrPassoword(user.getUsrPassoword());
+		this.setUsrPassword(user.getUsrPassword());
 		this.setUsrRole(user.getUsrRole());
 		this.setUsrStatus(user.getUsrStatus());
 	}
