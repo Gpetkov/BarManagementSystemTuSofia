@@ -27,10 +27,9 @@ public class UserControler {
 			String userName = request.getRemoteUser();
 			user = (User) em.createNamedQuery("User.getByUserName")
 					.setParameter("usrUsername", userName).getSingleResult();
-			//em.flush();
 		} catch (Exception e) {
 			throw new GetUserException(
-					"ERRO occured while retrieving the request user");
+					"ERRO occured while retrieving the request's user");
 		}
 		return user;
 	}

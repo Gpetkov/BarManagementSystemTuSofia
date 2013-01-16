@@ -3,6 +3,7 @@ package com.tu.university.barmanagement.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
 import com.tu.university.barmanagement.controler.UserControler;
+import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.OrderStatusManager;
 import com.tu.university.barmanagement.model.OrderStatus;
 import com.tu.university.barmanagement.model.User;
@@ -54,6 +56,7 @@ public class OrderStatusResource {
 	 * @see Result
 	 */
 	@GET
+	@RolesAllowed({"waiter", "manager"})
 	@Produces(MediaType.APPLICATION_JSON)
 	public String geAlltOrderStatus() {
 		Message message = new Message();
@@ -86,6 +89,7 @@ public class OrderStatusResource {
 	 * @see Result
 	 */
 	@GET
+	@RolesAllowed({"waiter", "manager"})
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getOrderStatus(@PathParam("id") Integer id) {
@@ -130,6 +134,7 @@ public class OrderStatusResource {
 	 * @see Result
 	 */
 	@PUT
+	@RolesAllowed({"manager"})
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateOrderStatus(@PathParam("id") Integer id,
@@ -188,6 +193,16 @@ public class OrderStatusResource {
 			messages.add(message);
 			result.setMessages(messages);
 			result.setStatus(Result.SUCCESS);
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("Problem occured while updating the OrderStatus.");
 			message.setStatus(Message.ERROR);
@@ -212,6 +227,7 @@ public class OrderStatusResource {
 	 * @see Result
 	 */
 	@POST
+	@RolesAllowed({"manager"})
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String addOrderStatus(String orderStatus) {
@@ -238,6 +254,16 @@ public class OrderStatusResource {
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
 			}
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (JsonSyntaxException e) {
 			message.setData("Erro occured while parsing the Json OrderStatus to object. Please check the Json syntax.");
 			message.setStatus(Message.ERROR);
@@ -255,7 +281,6 @@ public class OrderStatusResource {
 			result.setStatus(Result.FAIL);
 			return result.toJson();
 		} catch (Exception e) {
-
 			message.setData("Unknown ERROR occured while adding the OrderStatus.");
 			message.setStatus(Message.ERROR);
 			messages.add(message);
@@ -275,6 +300,7 @@ public class OrderStatusResource {
 	 * @see Result
 	 */
 	@DELETE
+	@RolesAllowed({"manager"})
 	@Path("/{id}")
 	public String removeOrderStatus(@PathParam("id") Integer id) {
 		Message message = new Message();

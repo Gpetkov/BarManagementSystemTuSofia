@@ -3,6 +3,7 @@ package com.tu.university.barmanagement.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
@@ -20,6 +21,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
 import com.tu.university.barmanagement.controler.UserControler;
+import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.UserManager;
 import com.tu.university.barmanagement.model.User;
 import com.tu.university.barmanagement.result.JsonObject;
@@ -28,6 +30,7 @@ import com.tu.university.barmanagement.result.Result;
 
 @Stateless
 @Path("user")
+@RolesAllowed({"manager"})
 public class UserResource {
 	@Context
 	private UriInfo context;
@@ -185,6 +188,16 @@ public class UserResource {
 			messages.add(message);
 			result.setMessages(messages);
 			result.setStatus(Result.SUCCESS);
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("Problem occured while updating the User.");
 			message.setStatus(Message.ERROR);
@@ -235,6 +248,16 @@ public class UserResource {
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
 			}
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (JsonSyntaxException e) {
 			message.setData("Erro occured while parsing the Json User to object. Please check the Json syntax.");
 			message.setStatus(Message.ERROR);

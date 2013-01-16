@@ -21,6 +21,7 @@ import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
 import com.tu.university.barmanagement.controler.UserControler;
+import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.OrderManager;
 import com.tu.university.barmanagement.model.Order;
 import com.tu.university.barmanagement.model.User;
@@ -86,7 +87,7 @@ public class OrderResource {
 	 * @see Result
 	 */
 	@GET
-	@RolesAllowed(value = "manager")
+	@RolesAllowed({"waiter", "manager"})
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getOrder(@PathParam("id") Integer id) {
@@ -131,7 +132,7 @@ public class OrderResource {
 	 * @see Result
 	 */
 	@PUT
-	@RolesAllowed(value = "manager")
+	@RolesAllowed({"waiter", "manager"})
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateOrder(@PathParam("id") Integer id, String order) {
@@ -188,6 +189,16 @@ public class OrderResource {
 			messages.add(message);
 			result.setMessages(messages);
 			result.setStatus(Result.SUCCESS);
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("The Order already exists OR the problem is with jpa");
 			message.setStatus(Message.ERROR);
@@ -211,6 +222,7 @@ public class OrderResource {
 	 * @see Result
 	 */
 	@POST
+	@RolesAllowed({"waiter", "manager"})
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String addOrder(String order) {
@@ -236,6 +248,16 @@ public class OrderResource {
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
 			}
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (JsonSyntaxException e) {
 			message.setData("Erro occured while parsing the Json Order to object. Please check the Json syntax.");
 			message.setStatus(Message.ERROR);
@@ -270,6 +292,7 @@ public class OrderResource {
 	 * @see Result
 	 */
 	@DELETE
+	@RolesAllowed({"waiter", "manager"})
 	@Path("/{id}")
 	public String removeOrder(@PathParam("id") Integer id) {
 		Message message = new Message();
@@ -297,7 +320,7 @@ public class OrderResource {
 	}
 
 	@PUT
-	@RolesAllowed(value = "barman")
+	@RolesAllowed({"barman"})
 	@Path("/{id}/addbarman")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateOrderBarman(@PathParam("id") Integer id, String order) {
@@ -319,6 +342,16 @@ public class OrderResource {
 				User usr = this.userControl.getCurrentUser();
 				ordrOriginal.setOrderBarman(usr);
 			}
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("ERROR occured while adding a barman to the order.");
 			message.setStatus(Message.ERROR);
