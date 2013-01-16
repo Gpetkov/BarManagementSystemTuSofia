@@ -3,7 +3,6 @@ package com.tu.university.barmanagement.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -43,19 +41,13 @@ public class OrderStatus implements Serializable {
 	@Column(name = "ordst_date_updated")
 	private Timestamp ordstDateUpdated;
 
-	// bi-directional many-to-one association to BmOrder
-	@OneToMany(mappedBy = "bmOrderStatus")
-	private List<Order> bmOrders;
-
-	// bi-directional many-to-one association to BmUser
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordst_created_by_bm_user_id")
-	private User bmUser1;
+	private User userCreated;
 
-	// bi-directional many-to-one association to BmUser
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordst_updated_by_bm_user_id")
-	private User bmUser2;
+	private User userUpdated;
 
 	@PrePersist
 	void onCreate() {
@@ -102,31 +94,86 @@ public class OrderStatus implements Serializable {
 		this.ordstDateUpdated = ordstDateUpdated;
 	}
 
-	public List<Order> getBmOrders() {
-		return this.bmOrders;
+	public User getUserCreated() {
+		return this.userCreated;
 	}
 
-	public void setBmOrders(List<Order> bmOrders) {
-		this.bmOrders = bmOrders;
+	public void setUserCreated(User bmUser1) {
+		this.userCreated = bmUser1;
 	}
 
-	public User getBmUser1() {
-		return this.bmUser1;
+	public User getUserUpdated() {
+		return this.userUpdated;
 	}
 
-	public void setBmUser1(User bmUser1) {
-		this.bmUser1 = bmUser1;
-	}
-
-	public User getBmUser2() {
-		return this.bmUser2;
-	}
-
-	public void setBmUser2(User bmUser2) {
-		this.bmUser2 = bmUser2;
+	public void setUserUpdated(User bmUser2) {
+		this.userUpdated = bmUser2;
 	}
 
 	public void update(OrderStatus orderStaus) {
 		this.setOrdrstValue(orderStaus.getOrdrstValue());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((ordrstValue == null) ? 0 : ordrstValue.hashCode());
+		result = prime
+				* result
+				+ ((ordstDateCreated == null) ? 0 : ordstDateCreated.hashCode());
+		result = prime
+				* result
+				+ ((ordstDateUpdated == null) ? 0 : ordstDateUpdated.hashCode());
+		result = prime * result + ((ordstId == null) ? 0 : ordstId.hashCode());
+		result = prime * result
+				+ ((userCreated == null) ? 0 : userCreated.hashCode());
+		result = prime * result
+				+ ((userUpdated == null) ? 0 : userUpdated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		OrderStatus other = (OrderStatus) obj;
+		if (ordrstValue == null) {
+			if (other.ordrstValue != null)
+				return false;
+		} else if (!ordrstValue.equals(other.ordrstValue))
+			return false;
+		if (ordstDateCreated == null) {
+			if (other.ordstDateCreated != null)
+				return false;
+		} else if (!ordstDateCreated.equals(other.ordstDateCreated))
+			return false;
+		if (ordstDateUpdated == null) {
+			if (other.ordstDateUpdated != null)
+				return false;
+		} else if (!ordstDateUpdated.equals(other.ordstDateUpdated))
+			return false;
+		if (ordstId == null) {
+			if (other.ordstId != null)
+				return false;
+		} else if (!ordstId.equals(other.ordstId))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		if (userUpdated == null) {
+			if (other.userUpdated != null)
+				return false;
+		} else if (!userUpdated.equals(other.userUpdated))
+			return false;
+		return true;
+	}
+	
 }

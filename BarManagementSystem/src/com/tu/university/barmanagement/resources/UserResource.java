@@ -3,7 +3,6 @@ package com.tu.university.barmanagement.resources;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
@@ -20,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
+import com.tu.university.barmanagement.controler.UserControler;
 import com.tu.university.barmanagement.managers.UserManager;
 import com.tu.university.barmanagement.model.User;
 import com.tu.university.barmanagement.result.JsonObject;
@@ -27,7 +27,6 @@ import com.tu.university.barmanagement.result.Message;
 import com.tu.university.barmanagement.result.Result;
 
 @Stateless
-@PermitAll
 @Path("user")
 public class UserResource {
 	@Context
@@ -35,6 +34,10 @@ public class UserResource {
 
 	@EJB
 	UserManager em;
+
+	@EJB
+	private UserControler userControl;
+
 	/**
 	 * Default constructor.
 	 */
@@ -50,7 +53,7 @@ public class UserResource {
 	 * @see Result
 	 */
 	@GET
-	@Produces("application/json")
+	@Produces(MediaType.APPLICATION_JSON)
 	public String geAlltUsers() {
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
@@ -117,7 +120,7 @@ public class UserResource {
 		return result.toJson();
 	}
 	/**
-	 * PUT method for updating an instance of User 
+	 * PUT method for updating an instance of User
 	 * 
 	 * @param content
 	 *            representation for the resource
@@ -148,6 +151,20 @@ public class UserResource {
 				usrNew = JsonObject.parseJson(user, User.class);
 				usrOriginal.update(usrNew);
 			}
+		} catch (JsonSyntaxException e) {
+			message.setData("Erro occured while parsing the Json User to object. Please check the Json syntax.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (NullPointerException e) {
+			message.setData("The new user can not be empty! Empty Json object!");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("ERROR occured while retrieving the User and reinitialize the new one.");
 			message.setStatus(Message.ERROR);
@@ -160,6 +177,8 @@ public class UserResource {
 			return result.toJson();
 		}
 		try {
+			User usr = this.userControl.getCurrentUser();
+			usrOriginal.setUserUpdated(usr);
 			em.updateUser(usrOriginal);
 			message.setData("The User was updated successfully.");
 			message.setStatus(Message.INFO);
@@ -206,6 +225,8 @@ public class UserResource {
 				result.setMessages(messages);
 				result.setStatus(Result.FAIL);
 			} else {
+				User userCreate = this.userControl.getCurrentUser();
+				usr.setUserCreated(userCreate);
 				em.addUser(usr);
 				System.out.println("After add");
 				message.setData("The User was added successfully.");
@@ -222,7 +243,8 @@ public class UserResource {
 			result.setStatus(Result.FAIL);
 			return result.toJson();
 		} catch (EJBTransactionRolledbackException e) {
-			message.setData("The User with Username: \"" + usr.getUsrUsername() + "\" already exists OR there is problem with JPA persist.");
+			message.setData("The User with Username: \"" + usr.getUsrUsername()
+					+ "\" already exists OR there is problem with JPA persist.");
 			message.setStatus(Message.ERROR);
 			messages.add(message);
 			result.setMessages(messages);

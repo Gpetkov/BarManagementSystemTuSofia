@@ -3,7 +3,6 @@ package com.tu.university.barmanagement.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
@@ -43,19 +41,13 @@ public class Table implements Serializable {
 	@Column(name = "tbl_number")
 	private Integer tblNumber;
 
-	// bi-directional many-to-one association to BmOrder
-	@OneToMany(mappedBy = "bmTable")
-	private List<Order> bmOrders;
-
-	// bi-directional many-to-one association to BmUser
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tbl_created_by_bm_user_id")
-	private User bmUser1;
+	private User userCreated;
 
-	// bi-directional many-to-one association to BmUser
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "tbl_updated_by_bm_user_id")
-	private User bmUser2;
+	private User userUpdated;
 
 	@PrePersist
 	void onCreate() {
@@ -102,31 +94,84 @@ public class Table implements Serializable {
 		this.tblNumber = tblNumber;
 	}
 
-	public List<Order> getBmOrders() {
-		return this.bmOrders;
+	public User getUserCreated() {
+		return this.userCreated;
 	}
 
-	public void setBmOrders(List<Order> bmOrders) {
-		this.bmOrders = bmOrders;
+	public void setUserCreated(User bmUser1) {
+		this.userCreated = bmUser1;
 	}
 
-	public User getBmUser1() {
-		return this.bmUser1;
+	public User getUserUpdated() {
+		return this.userUpdated;
 	}
 
-	public void setBmUser1(User bmUser1) {
-		this.bmUser1 = bmUser1;
-	}
-
-	public User getBmUser2() {
-		return this.bmUser2;
-	}
-
-	public void setBmUser2(User bmUser2) {
-		this.bmUser2 = bmUser2;
+	public void setUserUpdated(User bmUser2) {
+		this.userUpdated = bmUser2;
 	}
 
 	public void update(Table table) {
 		this.setTblNumber(table.getTblNumber());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((tblDateCreated == null) ? 0 : tblDateCreated.hashCode());
+		result = prime * result
+				+ ((tblDateUpdated == null) ? 0 : tblDateUpdated.hashCode());
+		result = prime * result + ((tblId == null) ? 0 : tblId.hashCode());
+		result = prime * result
+				+ ((tblNumber == null) ? 0 : tblNumber.hashCode());
+		result = prime * result
+				+ ((userCreated == null) ? 0 : userCreated.hashCode());
+		result = prime * result
+				+ ((userUpdated == null) ? 0 : userUpdated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Table other = (Table) obj;
+		if (tblDateCreated == null) {
+			if (other.tblDateCreated != null)
+				return false;
+		} else if (!tblDateCreated.equals(other.tblDateCreated))
+			return false;
+		if (tblDateUpdated == null) {
+			if (other.tblDateUpdated != null)
+				return false;
+		} else if (!tblDateUpdated.equals(other.tblDateUpdated))
+			return false;
+		if (tblId == null) {
+			if (other.tblId != null)
+				return false;
+		} else if (!tblId.equals(other.tblId))
+			return false;
+		if (tblNumber == null) {
+			if (other.tblNumber != null)
+				return false;
+		} else if (!tblNumber.equals(other.tblNumber))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		if (userUpdated == null) {
+			if (other.userUpdated != null)
+				return false;
+		} else if (!userUpdated.equals(other.userUpdated))
+			return false;
+		return true;
+	}
+	
 }

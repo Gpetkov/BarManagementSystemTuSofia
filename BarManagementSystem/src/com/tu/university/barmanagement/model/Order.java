@@ -5,7 +5,9 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -41,34 +43,29 @@ public class Order implements Serializable {
 	@Column(name = "ord_date_updated")
 	private Timestamp ordDateUpdated;
 
-	// bi-directional many-to-one association to BmOrderStatus
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordr_status_id")
 	private OrderStatus bmOrderStatus;
 
-	// bi-directional many-to-one association to BmTable
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordr_table_id")
 	private Table bmTable;
-
-	// bi-directional many-to-one association to BmUser
-	@ManyToOne(fetch = FetchType.LAZY)
+	
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordr_barman_id")
-	private User bmUser1;
+	private User orderBarman;
 
-	// bi-directional many-to-one association to BmUser
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ord_created_by_bm_user_id")
-	private User bmUser2;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ordr_created_by_bm_user_id")
+	private User userCreated;
 
-	// bi-directional many-to-one association to BmUser
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "ord_updated_by_bm_user_id")
-	private User bmUser3;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ordr_updated_by_bm_user_id")
+	private User userUpdated;
 
-	// bi-directional many-to-many association to BmItem
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name = "bm_order_to_bm_item", joinColumns = {@JoinColumn(name = "ordr_id")}, inverseJoinColumns = {@JoinColumn(name = "itm_id")})
+	@ElementCollection
 	private List<Item> bmItems;
 
 	@PrePersist
@@ -124,28 +121,28 @@ public class Order implements Serializable {
 		this.bmTable = bmTable;
 	}
 
-	public User getBmUser1() {
-		return this.bmUser1;
+	public User getOrderBarman() {
+		return this.orderBarman;
 	}
 
-	public void setBmUser1(User bmUser1) {
-		this.bmUser1 = bmUser1;
+	public void setOrderBarman(User bmUser1) {
+		this.orderBarman = bmUser1;
 	}
 
-	public User getBmUser2() {
-		return this.bmUser2;
+	public User getUserCreated() {
+		return this.userCreated;
 	}
 
-	public void setBmUser2(User bmUser2) {
-		this.bmUser2 = bmUser2;
+	public void setUserCreated(User bmUser2) {
+		this.userCreated = bmUser2;
 	}
 
-	public User getBmUser3() {
-		return this.bmUser3;
+	public User getUserUpdated() {
+		return this.userUpdated;
 	}
 
-	public void setBmUser3(User bmUser3) {
-		this.bmUser3 = bmUser3;
+	public void setUserUpdated(User bmUser3) {
+		this.userUpdated = bmUser3;
 	}
 
 	public List<Item> getBmItems() {
@@ -156,6 +153,89 @@ public class Order implements Serializable {
 		this.bmItems = bmItems;
 	}
 	public void update(Order order) {
-		//ArrayList<Item>
+		this.setBmTable(order.getBmTable());
+		this.setBmOrderStatus(order.getBmOrderStatus());
+		this.setOrderBarman(order.getOrderBarman());
+		this.setBmItems(order.getBmItems());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bmItems == null) ? 0 : bmItems.hashCode());
+		result = prime * result
+				+ ((bmOrderStatus == null) ? 0 : bmOrderStatus.hashCode());
+		result = prime * result + ((bmTable == null) ? 0 : bmTable.hashCode());
+		result = prime * result
+				+ ((ordDateCreated == null) ? 0 : ordDateCreated.hashCode());
+		result = prime * result
+				+ ((ordDateUpdated == null) ? 0 : ordDateUpdated.hashCode());
+		result = prime * result + ((ordId == null) ? 0 : ordId.hashCode());
+		result = prime * result
+				+ ((orderBarman == null) ? 0 : orderBarman.hashCode());
+		result = prime * result
+				+ ((userCreated == null) ? 0 : userCreated.hashCode());
+		result = prime * result
+				+ ((userUpdated == null) ? 0 : userUpdated.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (bmItems == null) {
+			if (other.bmItems != null)
+				return false;
+		} else if (!bmItems.equals(other.bmItems))
+			return false;
+		if (bmOrderStatus == null) {
+			if (other.bmOrderStatus != null)
+				return false;
+		} else if (!bmOrderStatus.equals(other.bmOrderStatus))
+			return false;
+		if (bmTable == null) {
+			if (other.bmTable != null)
+				return false;
+		} else if (!bmTable.equals(other.bmTable))
+			return false;
+		if (ordDateCreated == null) {
+			if (other.ordDateCreated != null)
+				return false;
+		} else if (!ordDateCreated.equals(other.ordDateCreated))
+			return false;
+		if (ordDateUpdated == null) {
+			if (other.ordDateUpdated != null)
+				return false;
+		} else if (!ordDateUpdated.equals(other.ordDateUpdated))
+			return false;
+		if (ordId == null) {
+			if (other.ordId != null)
+				return false;
+		} else if (!ordId.equals(other.ordId))
+			return false;
+		if (orderBarman == null) {
+			if (other.orderBarman != null)
+				return false;
+		} else if (!orderBarman.equals(other.orderBarman))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		if (userUpdated == null) {
+			if (other.userUpdated != null)
+				return false;
+		} else if (!userUpdated.equals(other.userUpdated))
+			return false;
+		return true;
+	}
+	
 }

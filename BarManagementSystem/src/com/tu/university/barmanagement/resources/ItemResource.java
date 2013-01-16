@@ -7,7 +7,6 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Stateless;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,14 +37,15 @@ public class ItemResource {
 
 	@EJB
 	ItemManager em;
-	
+
 	@EJB
-	private  UserControler userControl;
+	private UserControler userControl;
+
 	/**
 	 * Default constructor.
 	 */
 	public ItemResource() {
-		//nothing to do
+		// nothing to do
 	}
 
 	/**
@@ -88,7 +88,7 @@ public class ItemResource {
 	 * @see Result
 	 */
 	@GET
-	@RolesAllowed(value="manager")
+	@RolesAllowed(value = "manager")
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getItem(@PathParam("id") Integer id) {
@@ -96,7 +96,6 @@ public class ItemResource {
 		List<Message> messages = new ArrayList<Message>();
 		Result<Item> result = new Result<Item>();
 		try {
-			//System.out.println(em.getItemById(id).getBmUser2().getUsrUsername());
 			result.setData(em.getItemById(id));
 			if (result.getData() == null) {
 				message.setData("The Item doesn't exists!");
@@ -134,7 +133,7 @@ public class ItemResource {
 	 * @see Result
 	 */
 	@PUT
-	@RolesAllowed(value="manager")
+	@RolesAllowed(value = "manager")
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateItem(@PathParam("id") Integer id, String item) {
@@ -157,6 +156,20 @@ public class ItemResource {
 				itmNew = JsonObject.parseJson(item, Item.class);
 				itmOriginal.update(itmNew);
 			}
+		} catch (JsonSyntaxException e) {
+			message.setData("Erro occured while parsing the Json Item to object. Please check the Json syntax.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (NullPointerException e) {
+			message.setData("The new Item can not be empty! Empty Json object!");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("ERROR occured while retrieving the Item and reinitialize the new one.");
 			message.setStatus(Message.ERROR);
@@ -172,7 +185,7 @@ public class ItemResource {
 			System.out.println(userControl.isInjected());
 			User usr = this.userControl.getCurrentUser();
 			System.out.println(usr.getUsrUsername());
-			itmOriginal.setBmUser2(this.userControl.getCurrentUser());
+			itmOriginal.setUserUpdated(this.userControl.getCurrentUser());
 			System.out.println("");
 			em.updateItem(itmOriginal);
 			message.setData("The Item was updated successfully.");
@@ -219,7 +232,8 @@ public class ItemResource {
 				result.setMessages(messages);
 				result.setStatus(Result.FAIL);
 			} else {
-				// itm.setBmUser1(context.)
+				User usr = this.userControl.getCurrentUser();
+				itm.setUserCreated(usr);
 				em.addItem(itm);
 				System.out.println("After add");
 				message.setData("The Item was added successfully.");

@@ -19,20 +19,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
+import com.tu.university.barmanagement.controler.UserControler;
 import com.tu.university.barmanagement.managers.OrderStatusManager;
 import com.tu.university.barmanagement.model.OrderStatus;
+import com.tu.university.barmanagement.model.User;
 import com.tu.university.barmanagement.result.JsonObject;
 import com.tu.university.barmanagement.result.Message;
 import com.tu.university.barmanagement.result.Result;
 
 @Stateless
-@Path("ordertatus")
+@Path("orderstatus")
 public class OrderStatusResource {
 	@Context
 	private UriInfo context;
 
 	@EJB
 	OrderStatusManager em;
+
+	@EJB
+	private UserControler userControl;
+
 	/**
 	 * Default constructor.
 	 */
@@ -49,7 +55,7 @@ public class OrderStatusResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String geAlltOrderStatuss() {
+	public String geAlltOrderStatus() {
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		Result<List<OrderStatus>> result = new Result<List<OrderStatus>>();
@@ -148,6 +154,20 @@ public class OrderStatusResource {
 						OrderStatus.class);
 				orderStatusOriginal.update(orderStatusNew);
 			}
+		} catch (JsonSyntaxException e) {
+			message.setData("Erro occured while parsing the Json Order Status to object. Please check the Json syntax.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (NullPointerException e) {
+			message.setData("The new Order Status can not be empty! Empty Json object!");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("ERROR occured while retrieving the OrderStatus and reinitialize the new one.");
 			message.setStatus(Message.ERROR);
@@ -160,6 +180,8 @@ public class OrderStatusResource {
 			return result.toJson();
 		}
 		try {
+			User usr = this.userControl.getCurrentUser();
+			orderStatusOriginal.setUserUpdated(usr);
 			em.updateOrderStatus(orderStatusOriginal);
 			message.setData("The OrderStatus was updated successfully.");
 			message.setStatus(Message.INFO);
@@ -206,6 +228,8 @@ public class OrderStatusResource {
 				result.setMessages(messages);
 				result.setStatus(Result.FAIL);
 			} else {
+				User usr = this.userControl.getCurrentUser();
+				ordStatus.setUserCreated(usr);
 				em.addOrderStatus(ordStatus);
 				System.out.println("After add");
 				message.setData("The OrderStatus was added successfully.");

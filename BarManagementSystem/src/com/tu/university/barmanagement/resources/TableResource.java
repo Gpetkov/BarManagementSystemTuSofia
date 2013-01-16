@@ -19,8 +19,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
+import com.tu.university.barmanagement.controler.UserControler;
 import com.tu.university.barmanagement.managers.TableManager;
 import com.tu.university.barmanagement.model.Table;
+import com.tu.university.barmanagement.model.User;
 import com.tu.university.barmanagement.result.JsonObject;
 import com.tu.university.barmanagement.result.Message;
 import com.tu.university.barmanagement.result.Result;
@@ -33,6 +35,10 @@ public class TableResource {
 
 	@EJB
 	TableManager em;
+
+	@EJB
+	private UserControler userControl;
+
 	/**
 	 * Default constructor.
 	 */
@@ -146,6 +152,20 @@ public class TableResource {
 				tblNew = JsonObject.parseJson(table, Table.class);
 				tblOriginal.update(tblNew);
 			}
+		} catch (JsonSyntaxException e) {
+			message.setData("Erro occured while parsing the Json Table to object. Please check the Json syntax.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (NullPointerException e) {
+			message.setData("The new table can not be empty! Empty Json object!");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
 		} catch (Exception e) {
 			message.setData("ERROR occured while retrieving the Table and reinitialize the new one.");
 			message.setStatus(Message.ERROR);
@@ -158,6 +178,8 @@ public class TableResource {
 			return result.toJson();
 		}
 		try {
+			User usr = this.userControl.getCurrentUser();
+			tblOriginal.setUserUpdated(usr);
 			em.updateTable(tblOriginal);
 			message.setData("The Table was updated successfully.");
 			message.setStatus(Message.INFO);
@@ -204,6 +226,8 @@ public class TableResource {
 				result.setMessages(messages);
 				result.setStatus(Result.FAIL);
 			} else {
+				User usr = this.userControl.getCurrentUser();
+				tbl.setUserCreated(usr);
 				em.addTable(tbl);
 				System.out.println("After add");
 				message.setData("The Table was added successfully.");

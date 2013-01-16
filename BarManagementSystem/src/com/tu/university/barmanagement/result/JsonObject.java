@@ -1,11 +1,5 @@
 package com.tu.university.barmanagement.result;
 
-import org.hibernate.proxy.HibernateProxy;
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.TypeAdapter;
-
-import com.google.gson.*;
 /**
  * This class represents an object that can be serialized to/from Json
  * 

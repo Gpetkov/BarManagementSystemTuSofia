@@ -3,9 +3,7 @@ package com.tu.university.barmanagement.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -50,20 +47,14 @@ public class Item implements Serializable {
 	@Column(name = "itm_type")
 	private String itmType;
 
-	// bi-directional many-to-one association to BmUser
-	@ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "itm_created_by_bm_user_id")
-	private User bmUser1;
+	private User userCreated;
 
-	// bi-directional many-to-one association to BmUser
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "itm_updated_by_bm_user_id")
-	private User bmUser2;
-
-	// bi-directional many-to-many association to BmOrder
-	@ManyToMany(mappedBy = "bmItems",cascade = CascadeType.ALL)
-	private List<Order> bmOrders;
-
+	private User userUpdated;
+	
 	@PrePersist
 	void onCreate() {
 		this.setItmDateCreated(new Timestamp((new Date()).getTime()));
@@ -123,29 +114,20 @@ public class Item implements Serializable {
 		this.itmType = itmType;
 	}
 
-	public User getBmUser1() {
-		return this.bmUser1;
+	public User getUserCreated() {
+		return this.userCreated;
 	}
 
-	public void setBmUser1(User bmUser1) {
-		this.bmUser1 = bmUser1;
+	public void setUserCreated(User bmUser1) {
+		this.userCreated = bmUser1;
 	}
 
-	public User getBmUser2() {
-//		User bmUser2 = HibernateUtil.unproxy(this.bmUser2);
-		return this.bmUser2;
+	public User getUserUpdated() {
+		return this.userUpdated;
 	}
 
-	public void setBmUser2(User bmUser2) {
-		this.bmUser2 = bmUser2;
-	}
-
-	public List<Order> getBmOrders() {
-		return this.bmOrders;
-	}
-
-	public void setBmOrders(List<Order> bmOrders) {
-		this.bmOrders = bmOrders;
+	public void setUserUpdated(User bmUser2) {
+		this.userUpdated = bmUser2;
 	}
 
 	public void update(Item item) {
@@ -153,4 +135,74 @@ public class Item implements Serializable {
 		this.setItmPrice(item.getItmPrice());
 		this.setItmType(item.getItmType());
 	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((itmDateCreated == null) ? 0 : itmDateCreated.hashCode());
+		result = prime * result
+				+ ((itmDateUpdated == null) ? 0 : itmDateUpdated.hashCode());
+		result = prime * result + ((itmId == null) ? 0 : itmId.hashCode());
+		result = prime * result + ((itmName == null) ? 0 : itmName.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(itmPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((itmType == null) ? 0 : itmType.hashCode());
+		result = prime * result
+				+ ((userCreated == null) ? 0 : userCreated.hashCode());
+		result = prime * result
+				+ ((userUpdated == null) ? 0 : userUpdated.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Item other = (Item) obj;
+		if (itmDateCreated == null) {
+			if (other.itmDateCreated != null)
+				return false;
+		} else if (!itmDateCreated.equals(other.itmDateCreated))
+			return false;
+		if (itmDateUpdated == null) {
+			if (other.itmDateUpdated != null)
+				return false;
+		} else if (!itmDateUpdated.equals(other.itmDateUpdated))
+			return false;
+		if (itmId == null) {
+			if (other.itmId != null)
+				return false;
+		} else if (!itmId.equals(other.itmId))
+			return false;
+		if (itmName == null) {
+			if (other.itmName != null)
+				return false;
+		} else if (!itmName.equals(other.itmName))
+			return false;
+		if (Double.doubleToLongBits(itmPrice) != Double
+				.doubleToLongBits(other.itmPrice))
+			return false;
+		if (itmType == null) {
+			if (other.itmType != null)
+				return false;
+		} else if (!itmType.equals(other.itmType))
+			return false;
+		if (userCreated == null) {
+			if (other.userCreated != null)
+				return false;
+		} else if (!userCreated.equals(other.userCreated))
+			return false;
+		if (userUpdated == null) {
+			if (other.userUpdated != null)
+				return false;
+		} else if (!userUpdated.equals(other.userUpdated))
+			return false;
+		return true;
+	}
+	
 }
