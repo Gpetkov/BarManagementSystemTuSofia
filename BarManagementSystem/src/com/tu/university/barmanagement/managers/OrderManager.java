@@ -23,7 +23,6 @@ public class OrderManager {
 		return order;
 	}
 	public void addOrder(Order order) {
-		//em.merge(order.getBmItems());
 		em.merge(order);
 		em.flush();
 	}

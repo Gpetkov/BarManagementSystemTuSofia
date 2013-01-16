@@ -230,7 +230,6 @@ public class OrderResource {
 				User usr = this.userControl.getCurrentUser();
 				ordr.setUserCreated(usr);
 				em.addOrder(ordr);
-				System.out.println("After add");
 				message.setData("The Order was added successfully.");
 				message.setStatus(Message.INFO);
 				messages.add(message);
@@ -252,7 +251,6 @@ public class OrderResource {
 			result.setStatus(Result.FAIL);
 			return result.toJson();
 		} catch (Exception e) {
-
 			message.setData("Unknown ERROR occured while adding the Order.");
 			message.setStatus(Message.ERROR);
 			messages.add(message);
@@ -295,6 +293,48 @@ public class OrderResource {
 			result.setStatus(Result.FAIL);
 			return result.toJson();
 		}
+		return result.toJson();
+	}
+
+	@PUT
+	@RolesAllowed(value = "barman")
+	@Path("/{id}/addbarman")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateOrderBarman(@PathParam("id") Integer id, String order) {
+		Order ordrOriginal = null;
+		Message message = new Message();
+		List<Message> messages = new ArrayList<Message>();
+		Result<Order> result = new Result<Order>();
+
+		try {
+			ordrOriginal = em.getOrderById(id);
+			if (ordrOriginal == null) {
+				message.setData("The Order doesn't exists!");
+				message.setStatus(Message.WARNING);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.SUCCESS);
+				return result.toJson();
+			} else {
+				User usr = this.userControl.getCurrentUser();
+				ordrOriginal.setOrderBarman(usr);
+			}
+		} catch (Exception e) {
+			message.setData("ERROR occured while adding a barman to the order.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		message.setData("The Barman was added successfully.");
+		message.setStatus(Message.INFO);
+		messages.add(message);
+		result.setMessages(messages);
+		result.setStatus(Result.SUCCESS);
 		return result.toJson();
 	}
 }
