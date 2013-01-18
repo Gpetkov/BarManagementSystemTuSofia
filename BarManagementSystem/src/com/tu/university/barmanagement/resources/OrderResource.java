@@ -55,6 +55,7 @@ public class OrderResource {
 	 * @see Result
 	 */
 	@GET
+	@RolesAllowed({"barman","waiter", "manager"})
 	@Produces(MediaType.APPLICATION_JSON)
 	public String geAlltOrders() {
 		Message message = new Message();
