@@ -23,8 +23,14 @@ import com.google.gson.JsonSyntaxException;
 import com.tu.university.barmanagement.controler.UserControler;
 import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.OrderManager;
+import com.tu.university.barmanagement.managers.OrderStatusManager;
+import com.tu.university.barmanagement.managers.TableManager;
+import com.tu.university.barmanagement.model.Item;
 import com.tu.university.barmanagement.model.Order;
+import com.tu.university.barmanagement.model.OrderStatus;
+import com.tu.university.barmanagement.model.Table;
 import com.tu.university.barmanagement.model.User;
+import com.tu.university.barmanagement.result.CustomOrder;
 import com.tu.university.barmanagement.result.JsonObject;
 import com.tu.university.barmanagement.result.Message;
 import com.tu.university.barmanagement.result.Result;
@@ -37,6 +43,12 @@ public class OrderResource {
 
 	@EJB
 	OrderManager em;
+
+	@EJB
+	TableManager em2;
+
+	@EJB
+	OrderStatusManager em3;
 
 	@EJB
 	private UserControler userControl;
@@ -55,7 +67,7 @@ public class OrderResource {
 	 * @see Result
 	 */
 	@GET
-	@RolesAllowed({"barman","waiter", "manager"})
+	@RolesAllowed({"barman", "waiter", "manager"})
 	@Produces(MediaType.APPLICATION_JSON)
 	public String geAlltOrders() {
 		Message message = new Message();
@@ -123,6 +135,47 @@ public class OrderResource {
 		}
 		return result.toJson();
 	}
+	// ----------------------------------------------------------------//
+
+	@GET
+	@RolesAllowed({"waiter", "manager"})
+	@Path("/{id}/getItems")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getOrderItems(@PathParam("id") Integer id) {
+		Message message = new Message();
+		List<Message> messages = new ArrayList<Message>();
+		Result<List<Item>> result = new Result<List<Item>>();
+
+		try {
+			result.setData(em.getOrderById(id).getBmItems());
+			if (result.getData() == null) {
+				message.setData("The Order doesn't exists!");
+				message.setStatus(Message.WARNING);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.SUCCESS);
+			} else {
+				message.setData("The Order was retrieved successfully.");
+				message.setStatus(Message.INFO);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.SUCCESS);
+			}
+		} catch (Exception e) {
+			message.setData("Problem occured while retrieving the Order.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		return result.toJson();
+	}
+
+	// ----------------------------------------------------------------//
 	/**
 	 * PUT method for updating an instance of Order
 	 * 
@@ -136,60 +189,23 @@ public class OrderResource {
 	@RolesAllowed({"waiter", "manager"})
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String updateOrder(@PathParam("id") Integer id, String order) {
-		Order ordrOriginal = null;
-		Order ordrNew = null;
+	public String updateOrder(@PathParam("id") Integer id, String cstmOrder) {
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		Result<Order> result = new Result<Order>();
-
 		try {
-			ordrOriginal = em.getOrderById(id);
-			if (ordrOriginal == null) {
-				message.setData("The Order doesn't exists!");
-				message.setStatus(Message.WARNING);
-				messages.add(message);
-				result.setMessages(messages);
-				result.setStatus(Result.SUCCESS);
-				return result.toJson();
-			} else {
-				ordrNew = JsonObject.parseJson(order, Order.class);
-				ordrOriginal.update(ordrNew);
-			}
-		} catch (JsonSyntaxException e) {
-			message.setData("Erro occured while parsing the Json Order to object. Please check the Json syntax.");
-			message.setStatus(Message.ERROR);
-			messages.add(message);
-			result.setMessages(messages);
-			result.setStatus(Result.FAIL);
-			return result.toJson();
-		} catch (NullPointerException e) {
-			message.setData("The new Order can not be empty! Empty Json object!");
-			message.setStatus(Message.ERROR);
-			messages.add(message);
-			result.setMessages(messages);
-			result.setStatus(Result.FAIL);
-			return result.toJson();
-		} catch (Exception e) {
-			message.setData("ERROR occured while retrieving the Order and reinitialize the new one.");
-			message.setStatus(Message.ERROR);
-			messages.add(message);
-			Message messageException = new Message();
-			messageException.setData(e.getMessage());
-			messages.add(messageException);
-			result.setMessages(messages);
-			result.setStatus(Result.FAIL);
-			return result.toJson();
-		}
-		try {
+			CustomOrder customOrder = JsonObject.parseJson(cstmOrder,
+					CustomOrder.class);
+			Order order = em.getOrderById(customOrder.getOrdId());
+			Table table = em2.getTableById(customOrder.getTableId());
+			order.setBmTable(table);
 			User usr = this.userControl.getCurrentUser();
-			ordrOriginal.setUserUpdated(usr);
-			em.updateOrder(ordrOriginal);
+			order.setUserUpdated(usr);
+			em.updateOrder(order);
 			message.setData("The Order was updated successfully.");
 			message.setStatus(Message.INFO);
 			messages.add(message);
 			result.setMessages(messages);
-			result.setStatus(Result.SUCCESS);
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());
 			message.setStatus(Message.ERROR);
@@ -226,29 +242,30 @@ public class OrderResource {
 	@RolesAllowed({"waiter", "manager"})
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String addOrder(String order) {
-		Order ordr = null;
+	public String addOrder(String cstmOrder) {
+		CustomOrder customOrder = JsonObject.parseJson(cstmOrder,
+				CustomOrder.class);
+		Table table = em2.getTableById(customOrder.getTableId());
+		OrderStatus ordrst = em3.getOrderStatusById(customOrder
+				.getOrderStatusId());
+		Order ordr = new Order();
+		ordr.setBmTable(table);
+		ordr.setBmOrderStatus(ordrst);
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		final Result<Order> result = new Result<Order>();
 		try {
-			ordr = JsonObject.parseJson(order, Order.class);
-			if (ordr == null) {
-				message.setData("The Json parsing returned a null object");
-				message.setStatus(Message.ERROR);
-				messages.add(message);
-				result.setMessages(messages);
-				result.setStatus(Result.FAIL);
-			} else {
-				User usr = this.userControl.getCurrentUser();
-				ordr.setUserCreated(usr);
-				em.addOrder(ordr);
-				message.setData("The Order was added successfully.");
-				message.setStatus(Message.INFO);
-				messages.add(message);
-				result.setMessages(messages);
-				result.setStatus(Result.SUCCESS);
-			}
+			User usr = this.userControl.getCurrentUser();
+			ordr.setUserCreated(usr);
+			Integer id = em.addOrder(ordr);
+			ordr.setOrdId(id);
+			message.setData("The Order was added successfully.");
+			message.setStatus(Message.INFO);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.SUCCESS);
+			result.setData(ordr);
+
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());
 			message.setStatus(Message.ERROR);

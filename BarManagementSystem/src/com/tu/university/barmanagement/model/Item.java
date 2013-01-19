@@ -135,6 +135,7 @@ public class Item implements Serializable {
 		this.setItmPrice(item.getItmPrice());
 		this.setItmType(item.getItmType());
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

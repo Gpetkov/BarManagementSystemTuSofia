@@ -22,12 +22,14 @@ public class OrderManager {
 		em.flush();
 		return order;
 	}
-	public void addOrder(Order order) {
-		em.merge(order);
+	public Integer addOrder(Order order) {
+		em.persist(order);
 		em.flush();
+		return order.getOrdId();
 	}
 
 	public void updateOrder(Order order) {
+		
 		em.merge(order);
 		em.flush();
 	}
@@ -36,4 +38,7 @@ public class OrderManager {
 		if (order != null)
 			em.remove(order);
 	}
+	
+	
+	
 }

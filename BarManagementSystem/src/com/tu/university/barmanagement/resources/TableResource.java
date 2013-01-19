@@ -244,13 +244,15 @@ public class TableResource {
 			} else {
 				User usr = this.userControl.getCurrentUser();
 				tbl.setUserCreated(usr);
-				em.addTable(tbl);
+				Integer id = em.addTable(tbl);
+				tbl.setTblId(id);
 				System.out.println("After add");
 				message.setData("The Table was added successfully.");
 				message.setStatus(Message.INFO);
 				messages.add(message);
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
+				result.setData(tbl);
 			}
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());

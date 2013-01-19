@@ -23,9 +23,10 @@ public class UserManager {
 		em.flush();
 		return user;
 	}
-	public void addUser(User user) {
+	public Integer addUser(User user) {
 		em.persist(user);
 		em.flush();
+		return user.getUsrId();
 	}
 
 	public void updateUser(User user) {

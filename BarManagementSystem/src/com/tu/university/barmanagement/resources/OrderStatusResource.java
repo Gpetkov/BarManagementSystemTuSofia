@@ -246,13 +246,15 @@ public class OrderStatusResource {
 			} else {
 				User usr = this.userControl.getCurrentUser();
 				ordStatus.setUserCreated(usr);
-				em.addOrderStatus(ordStatus);
+				Integer id = em.addOrderStatus(ordStatus);
+				ordStatus.setOrdstId(id);
 				System.out.println("After add");
 				message.setData("The OrderStatus was added successfully.");
 				message.setStatus(Message.INFO);
 				messages.add(message);
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
+				result.setData(ordStatus);
 			}
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());

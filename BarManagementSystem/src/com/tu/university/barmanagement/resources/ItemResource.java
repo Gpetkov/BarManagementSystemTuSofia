@@ -90,7 +90,7 @@ public class ItemResource {
 	 * @see Result
 	 */
 	@GET
-	@RolesAllowed({"barman", "manager"})
+	@RolesAllowed({"waiter","barman","manager"})
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String getItem(@PathParam("id") Integer id) {
@@ -245,15 +245,18 @@ public class ItemResource {
 				result.setMessages(messages);
 				result.setStatus(Result.FAIL);
 			} else {
+				//Integer id;
 				User usr = this.userControl.getCurrentUser();
 				itm.setUserCreated(usr);
-				em.addItem(itm);
+				Integer id = em.addItem(itm);
+				itm.setItmId(id);
 				System.out.println("After add");
 				message.setData("The Item was added successfully.");
 				message.setStatus(Message.INFO);
 				messages.add(message);
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
+				result.setData(itm);
 			}
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());

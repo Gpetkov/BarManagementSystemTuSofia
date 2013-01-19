@@ -22,9 +22,10 @@ public class TableManager {
 		em.flush();
 		return Table;
 	}
-	public void addTable(Table table) {
+	public Integer addTable(Table table) {
 		em.persist(table);
 		em.flush();
+		return table.getTblId();
 	}
 
 	public void updateTable(Table table) {

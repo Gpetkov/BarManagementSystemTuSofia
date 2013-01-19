@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -65,7 +64,7 @@ public class Order implements Serializable {
 
 	@ManyToMany(cascade=CascadeType.ALL)
 	@JoinTable(name = "bm_order_to_bm_item", joinColumns = {@JoinColumn(name = "ordr_id")}, inverseJoinColumns = {@JoinColumn(name = "itm_id")})
-	@ElementCollection
+	//@ElementCollection
 	private List<Item> bmItems;
 
 	@PrePersist

@@ -22,9 +22,10 @@ public class ItemManager {
 		em.flush();
 		return item;
 	}
-	public void addItem(Item item) {
+	public Integer addItem(Item item) {
 		em.persist(item);
 		em.flush();
+		return item.getItmId();
 	}
 
 	public void updateItem(Item item) {

@@ -240,13 +240,15 @@ public class UserResource {
 			} else {
 				User userCreate = this.userControl.getCurrentUser();
 				usr.setUserCreated(userCreate);
-				em.addUser(usr);
+				Integer id = em.addUser(usr);
+				usr.setUsrId(id);
 				System.out.println("After add");
 				message.setData("The User was added successfully.");
 				message.setStatus(Message.INFO);
 				messages.add(message);
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
+				result.setData(usr);
 			}
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());

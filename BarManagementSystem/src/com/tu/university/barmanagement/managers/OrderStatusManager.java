@@ -22,9 +22,10 @@ public class OrderStatusManager {
 		em.flush();
 		return OrderStatus;
 	}
-	public void addOrderStatus(OrderStatus orderStatus) {
+	public Integer addOrderStatus(OrderStatus orderStatus) {
 		em.persist(orderStatus);
 		em.flush();
+		return orderStatus.getOrdstId();
 	}
 
 	public void updateOrderStatus(OrderStatus orderStatus) {

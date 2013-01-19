@@ -5,12 +5,10 @@
     <welcome-file>login.html</welcome-file>
     <welcome-file>BarmanView.html</welcome-file>
     <welcome-file>ManagerView.html</welcome-file>
+    <welcome-file>ItemView.html</welcome-file>
+    <welcome-file>UserView.html</welcome-file>
+    <welcome-file>TableView.html</welcome-file>
     <welcome-file>WaiterView.html</welcome-file>
-<!--     <welcome-file>index.htm</welcome-file> -->
-<!--     <welcome-file>index.jsp</welcome-file> -->
-<!--     <welcome-file>default.html</welcome-file> -->
-<!--     <welcome-file>default.htm</welcome-file> -->
-<!--     <welcome-file>default.jsp</welcome-file> -->
   </welcome-file-list>
   <servlet>
     <description>JAX-RS Tools Generated - Do not modify</description>
@@ -20,96 +18,128 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>JAX-RS Servlet</servlet-name>
-    <url-pattern>/rest/*</url-pattern>
+<!--     <url-pattern>/rest/*</url-pattern> -->
     <url-pattern>/jaxrs/*</url-pattern>
   </servlet-mapping>
-  
-<security-role>
-      <role-name>manager</role-name>
-</security-role>
-
-<security-role>
-      <role-name>barman</role-name>
-</security-role>
-
-<security-role>
-      <role-name>waiter</role-name>
-</security-role>
-
-<security-constraint>
+  <security-role>
+    <role-name>manager</role-name>
+  </security-role>
+  <security-role>
+    <role-name>barman</role-name>
+  </security-role>
+  <security-role>
+    <role-name>waiter</role-name>
+  </security-role>
+  <security-constraint>
     <display-name>You should be a manager</display-name>
     <web-resource-collection>
-        <web-resource-name>Manager</web-resource-name>
-        <description/>
-        <url-pattern>/ManagerView.html</url-pattern>
-        <http-method>GET</http-method>
-        <http-method>POST</http-method>
+      <web-resource-name>Manager</web-resource-name>
+      <description></description>
+      <url-pattern>/ManagerView.html</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
     </web-resource-collection>
     <auth-constraint>
-        <description/>
-        <role-name>manager</role-name>
+      <description></description>
+      <role-name>manager</role-name>
     </auth-constraint>
-</security-constraint>
-
-<security-constraint>
+  </security-constraint>
+  <security-constraint>
+    <display-name>You should be a manager</display-name>
+    <web-resource-collection>
+      <web-resource-name>Manager</web-resource-name>
+      <description></description>
+      <url-pattern>/ItemView.html</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <description></description>
+      <role-name>manager</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <display-name>You should be a manager</display-name>
+    <web-resource-collection>
+      <web-resource-name>Manager</web-resource-name>
+      <description></description>
+      <url-pattern>/UserView.html</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <description></description>
+      <role-name>manager</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
+    <display-name>You should be a manager</display-name>
+    <web-resource-collection>
+      <web-resource-name>Manager</web-resource-name>
+      <description></description>
+      <url-pattern>/TableView.html</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <description></description>
+      <role-name>manager</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <security-constraint>
     <display-name>You should be a barman</display-name>
     <web-resource-collection>
-        <web-resource-name>Barman</web-resource-name>
-        <description/>
-        <url-pattern>/BarmanView.html</url-pattern>
-        <http-method>GET</http-method>
-        <http-method>POST</http-method>
+      <web-resource-name>Barman</web-resource-name>
+      <description></description>
+      <url-pattern>/BarmanView.html</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
     </web-resource-collection>
     <auth-constraint>
-        <description/>
-        <role-name>barman</role-name>
+      <description></description>
+      <role-name>barman</role-name>
     </auth-constraint>
-</security-constraint>
-
-<security-constraint>
+  </security-constraint>
+  <security-constraint>
     <display-name>You should be a waiter</display-name>
     <web-resource-collection>
-        <web-resource-name>Waiter</web-resource-name>
-        <description/>
-        <url-pattern>/WaiterView.html</url-pattern>
-        <http-method>GET</http-method>
-        <http-method>POST</http-method>
+      <web-resource-name>Waiter</web-resource-name>
+      <description></description>
+      <url-pattern>/WaiterView.html</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
     </web-resource-collection>
     <auth-constraint>
-        <description/>
-        <role-name>waiter</role-name>
+      <description></description>
+      <role-name>waiter</role-name>
     </auth-constraint>
-</security-constraint>
-
-<security-constraint>
+  </security-constraint>
+  <security-constraint>
     <display-name>all</display-name>
     <web-resource-collection>
-        <web-resource-name>all</web-resource-name>
-      <url-pattern>/jaxrs/*</url-pattern>  
-      <http-method>GET</http-method>  
+      <web-resource-name>all</web-resource-name>
+      <url-pattern>/jaxrs/*</url-pattern>
+      <http-method>GET</http-method>
       <http-method>POST</http-method>
       <http-method>PUT</http-method>
       <http-method>DELETE</http-method>
     </web-resource-collection>
     <auth-constraint>
-        <role-name>manager</role-name>
-        <role-name>barman</role-name>
-        <role-name>waiter</role-name>
+      <role-name>manager</role-name>
+      <role-name>barman</role-name>
+      <role-name>waiter</role-name>
     </auth-constraint>
-</security-constraint>
-
-<login-config>
+  </security-constraint>
+  <login-config>
     <auth-method>FORM</auth-method>
     <realm-name>file</realm-name>
-     <form-login-config>
-         <form-login-page>/login.html</form-login-page>
-         <form-error-page>/loginerror.html</form-error-page>
-     </form-login-config>
-</login-config>
-
-<error-page>
+    <form-login-config>
+      <form-login-page>/login.html</form-login-page>
+      <form-error-page>/loginerror.html</form-error-page>
+    </form-login-config>
+  </login-config>
+  <error-page>
     <error-code>500</error-code>
     <location>/AccessRestricted.html</location>
-</error-page>
-
+  </error-page>
 </web-app>
