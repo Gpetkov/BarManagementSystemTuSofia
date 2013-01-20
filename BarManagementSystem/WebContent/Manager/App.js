@@ -53,9 +53,9 @@ Ext.define('MyDesktop.App', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 data: [
                     { name: 'View Orders', iconCls: 'grid-shortcut', module: 'grid-orders' },
-                    { name: 'Manage Users', iconCls: 'grid-shortcut', module: 'grid-users' },
-                    { name: 'Manage Items', iconCls: 'grid-shortcut', module: 'grid-items' },
-                    { name: 'Manage Tables', iconCls: 'grid-shortcut', module: 'grid-tables' }
+                    { name: 'Manage Users', iconCls: 'accordion-shortcut', module: 'grid-users' },
+                    { name: 'Manage Items', iconCls: 'notepad-shortcut', module: 'grid-items' },
+                    { name: 'Manage Tables', iconCls: 'table-shortcut', module: 'grid-tables' }
                 ]
             }),
 

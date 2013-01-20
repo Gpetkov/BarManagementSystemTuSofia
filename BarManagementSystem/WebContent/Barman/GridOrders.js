@@ -219,7 +219,7 @@ Ext.define('MyDesktop.GridOrders', {
                         }],
                         tbar:[{
                             text: 'Done',
-                            iconCls: 'icon-add',
+                            iconCls: 'icon-done',
                             handler: function(){
                             	var selection = Ext.getCmp( 'items-table' ).getView().getSelectionModel().getSelection()[0];
                                 if (selection) {

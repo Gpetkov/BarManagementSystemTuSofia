@@ -10,6 +10,20 @@
     background-image: url(images/delete.png) !important;
 }
 
+.icon-done {
+    background-image: url(../shared/icons/fam/accept.png) !important;
+}
+
+.icon-refresh {
+    background-image: url(../../resources/themes/images/default/grid/refresh.gif) !important;
+}
+
+.table-shortcut {
+    background-image: url(../../examples/desktop/images/gridLarge.png) !important;
+}
+
+
+
 .x-ie6 .icon-user {
     background-image: url(images/user.gif) !important;
 }
