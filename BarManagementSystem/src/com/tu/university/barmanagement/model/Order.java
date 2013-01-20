@@ -27,7 +27,11 @@ import javax.persistence.PreUpdate;
  */
 @Entity
 @javax.persistence.Table(name = "bm_order")
-@NamedQueries({@NamedQuery(name = "Order.getAll", query = "Select o from Order o")})
+@NamedQueries({
+		@NamedQuery(name = "Order.getAll", query = "Select o from Order o"),
+		@NamedQuery(name = "findOrdersWithoutBarman", query = "SELECT o FROM Order o WHERE o.orderBarman IS NULL"),
+		@NamedQuery(name = "findBarmanOrders", query = "SELECT o FROM Order o WHERE o.orderBarman =:ordbarman")
+		})
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -49,7 +53,7 @@ public class Order implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordr_table_id")
 	private Table bmTable;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordr_barman_id")
 	private User orderBarman;
@@ -62,9 +66,9 @@ public class Order implements Serializable {
 	@JoinColumn(name = "ordr_updated_by_bm_user_id")
 	private User userUpdated;
 
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "bm_order_to_bm_item", joinColumns = {@JoinColumn(name = "ordr_id")}, inverseJoinColumns = {@JoinColumn(name = "itm_id")})
-	//@ElementCollection
+	// @ElementCollection
 	private List<Item> bmItems;
 
 	@PrePersist
@@ -236,5 +240,5 @@ public class Order implements Serializable {
 			return false;
 		return true;
 	}
-	
+
 }

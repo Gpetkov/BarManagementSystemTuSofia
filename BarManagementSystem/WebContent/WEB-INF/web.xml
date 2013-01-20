@@ -2,13 +2,9 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
   <display-name>BarManagementSystem</display-name>
   <welcome-file-list>
-    <welcome-file>login.html</welcome-file>
-    <welcome-file>BarmanView.html</welcome-file>
-    <welcome-file>ManagerView.html</welcome-file>
-    <welcome-file>ItemView.html</welcome-file>
-    <welcome-file>UserView.html</welcome-file>
-    <welcome-file>TableView.html</welcome-file>
-    <welcome-file>WaiterView.html</welcome-file>
+    <welcome-file>Waiter/desktop.html</welcome-file>
+    <welcome-file>Barman/desktop.html</welcome-file>
+    <welcome-file>Manager/desktop.html</welcome-file>
   </welcome-file-list>
   <servlet>
     <description>JAX-RS Tools Generated - Do not modify</description>
@@ -35,49 +31,7 @@
     <web-resource-collection>
       <web-resource-name>Manager</web-resource-name>
       <description></description>
-      <url-pattern>/ManagerView.html</url-pattern>
-      <http-method>GET</http-method>
-      <http-method>POST</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <description></description>
-      <role-name>manager</role-name>
-    </auth-constraint>
-  </security-constraint>
-  <security-constraint>
-    <display-name>You should be a manager</display-name>
-    <web-resource-collection>
-      <web-resource-name>Manager</web-resource-name>
-      <description></description>
-      <url-pattern>/ItemView.html</url-pattern>
-      <http-method>GET</http-method>
-      <http-method>POST</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <description></description>
-      <role-name>manager</role-name>
-    </auth-constraint>
-  </security-constraint>
-  <security-constraint>
-    <display-name>You should be a manager</display-name>
-    <web-resource-collection>
-      <web-resource-name>Manager</web-resource-name>
-      <description></description>
-      <url-pattern>/UserView.html</url-pattern>
-      <http-method>GET</http-method>
-      <http-method>POST</http-method>
-    </web-resource-collection>
-    <auth-constraint>
-      <description></description>
-      <role-name>manager</role-name>
-    </auth-constraint>
-  </security-constraint>
-  <security-constraint>
-    <display-name>You should be a manager</display-name>
-    <web-resource-collection>
-      <web-resource-name>Manager</web-resource-name>
-      <description></description>
-      <url-pattern>/TableView.html</url-pattern>
+      <url-pattern>/Manager/desktop.html</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
@@ -91,7 +45,7 @@
     <web-resource-collection>
       <web-resource-name>Barman</web-resource-name>
       <description></description>
-      <url-pattern>/BarmanView.html</url-pattern>
+      <url-pattern>/Barman/desktop.html</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>
@@ -105,7 +59,7 @@
     <web-resource-collection>
       <web-resource-name>Waiter</web-resource-name>
       <description></description>
-      <url-pattern>/WaiterView.html</url-pattern>
+      <url-pattern>/Waiter/desktop.html</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
     </web-resource-collection>

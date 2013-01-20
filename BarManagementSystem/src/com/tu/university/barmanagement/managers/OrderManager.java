@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.tu.university.barmanagement.model.Order;
+import com.tu.university.barmanagement.model.User;
 
 @Stateless
 public class OrderManager {
@@ -39,6 +40,19 @@ public class OrderManager {
 			em.remove(order);
 	}
 	
-	
-	
+	@SuppressWarnings("unchecked")
+	public List<Order> getAllOrdersWithoutBarman() {
+		javax.persistence.Query q = em.createNamedQuery("findOrdersWithoutBarman");
+		//q = q.setParameter(1, null);
+		List<Order> result = q.getResultList();
+		return result;
+	}
+	@SuppressWarnings("unchecked")
+	public List<Order> getAllBarmanOrders(User usr) {
+		javax.persistence.Query q = em.createNamedQuery("findBarmanOrders");
+		//q = q.setParameter(1, null);
+		q.setParameter("ordbarman", usr);
+		List<Order> result = q.getResultList();
+		return result;
+	}
 }

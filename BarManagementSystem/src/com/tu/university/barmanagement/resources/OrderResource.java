@@ -91,6 +91,83 @@ public class OrderResource {
 		return result.toJson();
 	}
 	/**
+	 * Retrieves representation of an Orders's instances
+	 * 
+	 * @return the result of the operation with message and status
+	 * @see Message
+	 * @see Result
+	 */
+	@GET
+	@RolesAllowed({"barman"})
+	@Path("orderwithoutbarman")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String geAlltOrdersWithoutBarman() {
+		Message message = new Message();
+		List<Message> messages = new ArrayList<Message>();
+		Result<List<Order>> result = new Result<List<Order>>();
+		try {
+			result.setData(em.getAllOrdersWithoutBarman());
+			message.setData("The Orders was retrieved successfully.");
+			message.setStatus(Message.INFO);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.SUCCESS);
+		} catch (Exception e) {
+			message.setData("Problem occured while retrieving the Orders.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		return result.toJson();
+	}
+
+	/**
+	 * Retrieves representation of an Orders's instances
+	 * 
+	 * @return the result of the operation with message and status
+	 * @see Message
+	 * @see Result
+	 */
+	@GET
+	@RolesAllowed({"barman"})
+	@Path("barmanorders")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String geAlltBarmanOrders() {
+		Message message = new Message();
+		List<Message> messages = new ArrayList<Message>();
+		Result<List<Order>> result = new Result<List<Order>>();
+		try {
+			User usr = this.userControl.getCurrentUser();
+			result.setData(em.getAllBarmanOrders(usr));
+			message.setData("The Orders was retrieved successfully.");
+			message.setStatus(Message.INFO);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.SUCCESS);
+		} catch (GetUserException e) {
+			message.setData(e.getMessage());
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (Exception e) {
+			message.setData("Problem occured while retrieving the Orders.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		return result.toJson();
+	}
+
+	/**
 	 * Retrieves representation of an Order's instance by ID
 	 * 
 	 * @param id
@@ -201,6 +278,7 @@ public class OrderResource {
 			order.setBmTable(table);
 			User usr = this.userControl.getCurrentUser();
 			order.setUserUpdated(usr);
+			order.setOrderBarman(null);
 			em.updateOrder(order);
 			message.setData("The Order was updated successfully.");
 			message.setStatus(Message.INFO);
@@ -382,6 +460,58 @@ public class OrderResource {
 			return result.toJson();
 		}
 		message.setData("The Barman was added successfully.");
+		message.setStatus(Message.INFO);
+		messages.add(message);
+		result.setMessages(messages);
+		result.setStatus(Result.SUCCESS);
+		return result.toJson();
+	}
+
+	@PUT
+	@RolesAllowed({"barman"})
+	@Path("/{id}/makedone")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String updateOrderStatus(@PathParam("id") Integer id, String order) {
+		Order ordrOriginal = null;
+		Message message = new Message();
+		List<Message> messages = new ArrayList<Message>();
+		Result<Order> result = new Result<Order>();
+
+		try {
+			ordrOriginal = em.getOrderById(id);
+			if (ordrOriginal == null) {
+				message.setData("The Order doesn't exists!");
+				message.setStatus(Message.WARNING);
+				messages.add(message);
+				result.setMessages(messages);
+				result.setStatus(Result.SUCCESS);
+				return result.toJson();
+			} else {
+				OrderStatus os = em3.getOrderStatusById(1);
+				ordrOriginal.setBmOrderStatus(os);
+			}
+		} catch (EJBTransactionRolledbackException e) {
+			message.setData("Problem occured while retrieving the order status");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		} catch (Exception e) {
+			message.setData("ERROR occured while adding a barman to the order.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			Message messageException = new Message();
+			messageException.setData(e.getMessage());
+			messages.add(messageException);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		message.setData("The Status was updated successfully to done.");
 		message.setStatus(Message.INFO);
 		messages.add(message);
 		result.setMessages(messages);

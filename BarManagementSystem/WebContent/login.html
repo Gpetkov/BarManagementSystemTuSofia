@@ -3,14 +3,33 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Login Page</title>
+<link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-neptune.css" />
+<script type="text/javascript" src="extjs/ext-all.js"></script>
+<script type="text/javascript" src="extjs/ext-neptune.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<style>
+body
+{
+	background-image: url("Manager/wallpapers/Blue-Sencha.jpg");
+}
+
+.center-bitch-default
+{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -200px;
+	margin-top: -150px;
+}
+</style>
 </head>
 <body>
-	<p:panel header="Login From">
-<form method="post" action="j_security_check">
-Username: <input type="text" name="j_username" />
-Password: <input type="password" name="j_password" />
+<form id="login-form" method="post" action="j_security_check" style="visibility: hidden;">
+Username: <input id="username-ugly" type="text" name="j_username" />
+Password: <input id="password-ugly" type="password" name="j_password" />
 <br />
 <input type="submit" value="Login" />
 <input type="reset" value="Reset" />
+</form>
 </body>
 </html>
