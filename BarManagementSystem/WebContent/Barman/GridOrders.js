@@ -49,9 +49,9 @@ Ext.onReady(function(){
 						cls: 'ux-notification-light',
 						iconCls: 'ux-notification-icon-information',
 						closable: false,
-						title: 'Your time is up!',
+						title: '\u041F\u043E\u0431\u044A\u0440\u0437\u0430\u0439!',
 						spacing: 20,
-						html: rec.data.ordId + ' is late!',
+						html: '\u041F\u043E\u0440\u0447\u044A\u0447\u043A\u0430 \u043D\u043E\u043C\u0435\u0440' + rec.data.ordId + ' \u0435 \u0437\u0430\u043A\u044A\u0441\u043D\u044F\u043B\u0430!',
 						slideInDuration: 800,
 						slideBackDuration: 1500,
 						autoCloseDelay: 4000,
@@ -87,7 +87,7 @@ Ext.define('MyDesktop.GridOrders', {
 
     init : function(){
         this.launcher = {
-            text: 'View Orders',
+            text: '\u041F\u0440\u0435\u0433\u043B\u0435\u0434 \u043D\u0430 \u043F\u043E\u0440\u044A\u0447\u043A\u0438\u0442\u0435',
             iconCls:'icon-grid'
         };
     },
@@ -98,9 +98,9 @@ Ext.define('MyDesktop.GridOrders', {
         if(!win){
             win = desktop.createWindow({
                 id: 'grid-orders',
-                title:'View Orders',
-                width:740,
-                height:480,
+                title:'\u041F\u0440\u0435\u0433\u043B\u0435\u0434 \u043D\u0430 \u043F\u043E\u0440\u044A\u0447\u043A\u0438\u0442\u0435',
+                width:817,
+                height:502,
                 iconCls: 'icon-grid',
                 animCollapse:false,
                 constrainHeader:true,
@@ -127,8 +127,8 @@ Ext.define('MyDesktop.GridOrders', {
                             }
                         }),
                         columns: [{
-                            text: 'ID',
-                            width: 40,
+                            text: '\u0423\u043D\u0438\u043A\u0430\u043B\u0435\u043D \u043D\u043E\u043C\u0435\u0440',
+                            width: 116,
                             sortable: true,
                             dataIndex: 'ordId',
                             renderer: function(v){
@@ -138,8 +138,8 @@ Ext.define('MyDesktop.GridOrders', {
                                 return v;
                             }
                         }, {
-                            header: 'Table',
-                            flex: 1,
+                            header: '\u041C\u0430\u0441\u0430',
+                            width: 76,
                             sortable: true,
                             dataIndex: 'tableId',
                             field: {
@@ -147,7 +147,7 @@ Ext.define('MyDesktop.GridOrders', {
                             }
                         }],
                         tbar:[{
-                            text: 'Confirm',
+                            text: '\u041F\u0440\u0438\u0435\u043C\u0438',
                             iconCls: 'icon-add',
                             handler: function(){
                             	var selection = Ext.getCmp( 'orders-table' ).getView().getSelectionModel().getSelection()[0];
@@ -170,10 +170,10 @@ Ext.define('MyDesktop.GridOrders', {
                         id: 'detailPanel',
                         bodyPadding: 7,
                         bodyStyle: "background: #ffffff;",
-                        html: 'Please select an order to see additional details.'
+                        html: '\u041C\u043E\u043B\u044F \u0438\u0437\u0431\u0435\u0440\u0435\u0442\u0435 \u043F\u043E\u0440\u044A\u0447\u043A\u0430, \u0437\u0430 \u0434\u0430 \u0432\u0438\u0434\u0438\u0442\u0435 \u043F\u044A\u043B\u043D\u0430\u0442\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F.'
                     },{
                         id: 'items-table',
-                        width: 150,
+                        width: 191,
                         region: 'east',
                         xtype: 'grid',
                         store: new Ext.data.JsonStore({
@@ -198,8 +198,8 @@ Ext.define('MyDesktop.GridOrders', {
                             }
                         }),
                         columns: [{
-                            text: 'ID',
-                            width: 40,
+                            text: '\u0423\u043D\u0438\u043A\u0430\u043B\u0435\u043D \u043D\u043E\u043C\u0435\u0440',
+                            width: 116,
                             sortable: true,
                             dataIndex: 'ordId',
                             renderer: function(v){
@@ -209,8 +209,8 @@ Ext.define('MyDesktop.GridOrders', {
                                 return v;
                             }
                         }, {
-                            header: 'Table',
-                            flex: 1,
+                            header: '\u041C\u0430\u0441\u0430',
+                            width: 76,
                             sortable: true,
                             dataIndex: 'tableId',
                             field: {
@@ -218,7 +218,7 @@ Ext.define('MyDesktop.GridOrders', {
                             }
                         }],
                         tbar:[{
-                            text: 'Done',
+                            text: '\u0413\u043E\u0442\u043E\u0432\u0430',
                             iconCls: 'icon-done',
                             handler: function(){
                             	var selection = Ext.getCmp( 'items-table' ).getView().getSelectionModel().getSelection()[0];
@@ -230,6 +230,14 @@ Ext.define('MyDesktop.GridOrders', {
                                 	        var text = response.responseText;
                                 	        Ext.getCmp( 'orders-table' ).getStore().reload();
                                 	        Ext.getCmp( 'items-table' ).getStore().reload();
+                                	        var detailPanel = Ext.getCmp('detailPanel'),
+                                        	data = selectedRecord[0].data,
+                                        	bmItems = data.bmItems,
+                                        	html = '<h1>\u041F\u0440\u043E\u0434\u0443\u043A\u0442\u0438:</h1><ol>';
+                                        for ( var i = 0; i < bmItems.length; i++ )
+                                    	{
+                                    		html += '<li>' + bmItems[ i ].itmName + '</li>';
+                                    	}
                                 	    }
                                 	});
                                 }
@@ -241,7 +249,7 @@ Ext.define('MyDesktop.GridOrders', {
                                     var detailPanel = Ext.getCmp('detailPanel'),
                                     	data = selectedRecord[0].data,
                                     	bmItems = data.bmItems,
-                                    	html = '<h1>Items:</h1><ol>';
+                                    	html = '<h1>\u041F\u0440\u043E\u0434\u0443\u043A\u0442\u0438:</h1><ol>';
                                     for ( var i = 0; i < bmItems.length; i++ )
                                 	{
                                 		html += '<li>' + bmItems[ i ].itmName + '</li>';

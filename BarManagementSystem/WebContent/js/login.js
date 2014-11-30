@@ -36,7 +36,7 @@ Ext.define('KitchenSink.view.examples.forms.Login', {
         {
             xtype: 'form',
             id: 'login-panel',
-            title: 'Login',
+            title: '\u0412\u0445\u043E\u0434',
             frame:true,
             bodyPadding: 13,
             height: null,
@@ -45,8 +45,8 @@ Ext.define('KitchenSink.view.examples.forms.Login', {
             defaults: { anchor: '100%' },
             
             items: [
-                { id: 'username-fancy', allowBlank:false, fieldLabel: 'Username', name: 'user', emptyText: 'username' },
-                { id: 'password-fancy', allowBlank:false, fieldLabel: 'Password', name: 'pass', emptyText: 'password', inputType: 'password' }
+                { id: 'username-fancy', allowBlank:false, fieldLabel: '\u041F\u043E\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043B\u0441\u043A\u043E \u0438\u043C\u0435', name: 'user', emptyText: '\u041F\u043E\u0442\u0440\u0435\u0431\u0438\u0442\u0435\u043B\u0441\u043A\u043E \u0438\u043C\u0435' },
+                { id: 'password-fancy', allowBlank:false, fieldLabel: '\u041F\u0430\u0440\u043E\u043B\u0430', name: 'pass', emptyText: '\u041F\u0430\u0440\u043E\u043B\u0430', inputType: 'password' }
             ],
             listeners: {
                 afterRender: function(thisForm, options){
@@ -58,7 +58,7 @@ Ext.define('KitchenSink.view.examples.forms.Login', {
             },
             buttons: [
                 {
-                	text:'Login',
+                	text:'\u0412\u043B\u0435\u0437',
                 	listeners: {
                 		click: onSubmit
                 	}

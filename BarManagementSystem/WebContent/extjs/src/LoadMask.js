@@ -43,7 +43,7 @@ Ext.define('Ext.LoadMask', {
      * @cfg {String} [msg="Loading..."]
      * The text to display in a centered loading message box.
      */
-    msg : 'Loading...',
+    msg : '\u0417\u0430\u0440\u0435\u0436\u0434\u0430\u043D\u0435...',
     //</locale>
 
     /**

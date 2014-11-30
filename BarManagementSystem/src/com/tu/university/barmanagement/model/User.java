@@ -17,6 +17,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 /**
  * The persistent class for the bm_user database table.
  * 
@@ -25,7 +28,7 @@ import javax.persistence.PreUpdate;
 @javax.persistence.Table(name = "bm_user")
 @NamedQueries({
 		@NamedQuery(name = "User.getAll", query = "Select u from User u"),
-		@NamedQuery(name = "User.getByUserName", query = "SELECT u from User u WHERE u.usrUsername = :usrUsername")})
+		@NamedQuery(name = "User.getByUserName", query = "SELECT u from User u WHERE u.usrUsername = :usrUsername") })
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -60,16 +63,19 @@ public class User implements Serializable {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usr_created_by_bm_user_id")
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private User userCreated;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "usr_updated_by_bm_user_id")
+	@Cascade(value = CascadeType.SAVE_UPDATE)
 	private User userUpdated;
 
 	@PrePersist
 	void onCreate() {
 		this.setUsrDateCreated(new Timestamp((new Date()).getTime()));
 	}
+
 	@PreUpdate
 	void onUpdate() {
 		this.setUsrDateUpdated(new Timestamp((new Date()).getTime()));
@@ -149,7 +155,7 @@ public class User implements Serializable {
 	public void setUsrUsername(String usrUsename) {
 		this.usrUsername = usrUsename;
 	}
-	
+
 	public User getUserCreated() {
 		return this.userCreated;
 	}
@@ -167,13 +173,14 @@ public class User implements Serializable {
 	}
 
 	public void update(User user) {
-			this.setUsrUsername(user.getUsrUsername());
-			this.setUsrFirstname(user.getUsrFirstname());
-			this.setUsrLastname(user.getUsrLastname());
-			this.setUsrPassword(user.getUsrPassword());
-			this.setUsrRole(user.getUsrRole());
-			this.setUsrStatus(user.getUsrStatus());
+		this.setUsrUsername(user.getUsrUsername());
+		this.setUsrFirstname(user.getUsrFirstname());
+		this.setUsrLastname(user.getUsrLastname());
+		this.setUsrPassword(user.getUsrPassword());
+		this.setUsrRole(user.getUsrRole());
+		this.setUsrStatus(user.getUsrStatus());
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -200,6 +207,7 @@ public class User implements Serializable {
 				+ ((usrUsername == null) ? 0 : usrUsername.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -266,5 +274,4 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
-
 }

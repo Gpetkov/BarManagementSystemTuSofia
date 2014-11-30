@@ -1,4 +1,4 @@
-package com.tu.university.barmanagement.controler;
+package com.tu.university.barmanagement.controller;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,7 +10,7 @@ import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.model.User;
 
 @Stateless
-public class UserControler {
+public class UserController {
 
 	@Context
 	HttpServletRequest request;
@@ -29,7 +29,7 @@ public class UserControler {
 					.setParameter("usrUsername", userName).getSingleResult();
 		} catch (Exception e) {
 			throw new GetUserException(
-					"ERRO occured while retrieving the request's user");
+					"ERROR occured while retrieving the request's user");
 		}
 		return user;
 	}

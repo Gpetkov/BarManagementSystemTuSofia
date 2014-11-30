@@ -106,7 +106,7 @@ Ext.define('MyDesktop.GridOrders', {
 
     init : function(){
         this.launcher = {
-            text: 'View Orders',
+            text: '\u041F\u0440\u0435\u0433\u043B\u0435\u0434 \u043D\u0430 \u043F\u043E\u0440\u044A\u0447\u043A\u0438\u0442\u0435',
             iconCls:'icon-grid'
         };
     },
@@ -117,7 +117,7 @@ Ext.define('MyDesktop.GridOrders', {
         if(!win){
             win = desktop.createWindow({
                 id: 'grid-orders',
-                title:'View Orders',
+                title:'\u041F\u0440\u0435\u0433\u043B\u0435\u0434 \u043D\u0430 \u043F\u043E\u0440\u044A\u0447\u043A\u0438\u0442\u0435',
                 width:740,
                 height:480,
                 iconCls: 'icon-grid',
@@ -161,8 +161,8 @@ Ext.define('MyDesktop.GridOrders', {
                         }),
                         plugins: [rowEditing = Ext.create('Ext.grid.plugin.RowEditing')],
                         columns: [{
-                            text: 'ID',
-                            width: 40,
+                            text: '\u0423\u043D\u0438\u043A\u0430\u043B\u0435\u043D \u043D\u043E\u043C\u0435\u0440',
+                            width: 116,
                             sortable: true,
                             dataIndex: 'ordId',
                             renderer: function(v){
@@ -172,15 +172,26 @@ Ext.define('MyDesktop.GridOrders', {
                                 return v;
                             }
                         }, {
-                            header: 'Table',
+                            header: '\u041C\u0430\u0441\u0430',
                             flex: 1,
                             sortable: true,
-                            dataIndex: 'tableId',
+                            dataIndex: 'tblNumber',
                             field: {
                             	xtype: 'combobox',
+                            	typeAhead : true,
+								allowBlank : false,
+								blankText: '\u041F\u043E\u043B\u0435\u0442\u043E \"\u041C\u0430\u0441\u0430\" \u0435 \u0437\u0430\u0434\u044A\u043B\u0436\u0438\u0442\u0435\u043B\u043D\u043E.',
+								triggerAction : 'all',
+								selectOnTab : true,
+								forceSelection: true,
                             	store: new Ext.data.JsonStore({
                             		autoLoad: true,
                                     model: 'Table',
+                                	allowBlank : false,
+									blankText: '\u041F\u043E\u043B\u0435\u0442\u043E \"\u041C\u0430\u0441\u0430\" \u0435 \u0437\u0430\u0434\u044A\u043B\u0436\u0438\u0442\u0435\u043B\u043D\u043E.',
+									triggerAction : 'all',
+									selectOnTab : true,
+									forceSelection: true,
                                     proxy: {
                                         type: 'rest',
                                         url: 'http://localhost:8080/BarManagementSystem/jaxrs/table',
@@ -194,18 +205,18 @@ Ext.define('MyDesktop.GridOrders', {
                                     }
                                 }),
                             	displayField: 'tblNumber',
-                                valueField: 'tblId',
+                                valueField: 'tblNumber',
                             }
                         }],
                         tbar:[{
-                            text: 'Add',
+                            text: '\u0414\u043E\u0431\u0430\u0432\u0438',
                             iconCls: 'icon-add',
                             handler: function(){
-                            	Ext.getCmp( 'orders-table' ).getStore().insert(0, new Order({'orderStatusId':150}));
+                            	Ext.getCmp( 'orders-table' ).getStore().insert(0, new Order({'orderStatusId':2}));
                                 rowEditing.startEdit(0, 0);
                             }
                         }, '-', {
-                            text: 'Delete',
+                            text: '\u0418\u0437\u0442\u0440\u0438\u0439',
                             iconCls: 'icon-delete',
                             handler: function(){
                                 var selection = Ext.getCmp( 'orders-table' ).getView().getSelectionModel().getSelection()[0];
@@ -214,7 +225,7 @@ Ext.define('MyDesktop.GridOrders', {
                                 }
                             }
                         }, '-', {
-                            text: 'Refresh',
+                            text: '\u041E\u0431\u043D\u043E\u0432\u0438',
                             iconCls: 'icon-refresh',
                             handler: function(){
                             	Ext.getCmp( 'orders-table' ).getStore().reload();
@@ -268,7 +279,7 @@ Ext.define('MyDesktop.GridOrders', {
                         }),
                         plugins: [rowEditing2 = Ext.create('Ext.grid.plugin.RowEditing')],
                         columns: [{
-                            text: 'ID',
+                            text: '\u0423\u043D\u0438\u043A\u0430\u043B\u0435\u043D \u043D\u043E\u043C\u0435\u0440',
                             width: 40,
                             hidden: true,
                             dataIndex: 'orderToItemId',
@@ -279,7 +290,7 @@ Ext.define('MyDesktop.GridOrders', {
                                 return v;
                             }
                         }, {
-                            text: 'Order ID',
+                            text: '\u041D\u043E\u043C\u0435\u0440 \u043D\u0430 \u043F\u043E\u0440\u044A\u0447\u043A\u0430',
                             width: 50,
                             dataIndex: 'ordrId',
                             hidden: true,
@@ -287,7 +298,7 @@ Ext.define('MyDesktop.GridOrders', {
                             	xtype: 'textfield'
                             }
                         }, {
-                            header: 'Item',
+                            header: '\u041F\u0440\u043E\u0434\u0443\u043A\u0442',
                             flex: 1,
                             sortable: true,
                             dataIndex: 'itmId',
@@ -301,6 +312,12 @@ Ext.define('MyDesktop.GridOrders', {
                             },
                             field: {
                             	xtype: 'combobox',
+                            	typeAhead : true,
+								allowBlank : false,
+								blankText: '\u041F\u043E\u043B\u0435\u0442\u043E \"\u041F\u0440\u043E\u0434\u0443\u043A\u0442\" \u0435 \u0437\u0430\u0434\u044A\u043B\u0436\u0438\u0442\u0435\u043B\u043D\u043E.',
+								triggerAction : 'all',
+								selectOnTab : true,
+								forceSelection: true,
                             	store: new Ext.data.JsonStore({
                             		autoLoad: true,
                                     model: 'Item',
@@ -321,7 +338,7 @@ Ext.define('MyDesktop.GridOrders', {
                             }
                         }],
                         tbar:[{
-                            text: 'Add',
+                            text: '\u0414\u043E\u0431\u0430\u0432\u0438',
                             iconCls: 'icon-add',
                             handler: function(){
                                 var selection = Ext.getCmp( 'orders-table' ).getView().getSelectionModel().getSelection()[0];
@@ -332,7 +349,7 @@ Ext.define('MyDesktop.GridOrders', {
                             	}
                             }
                         }, '-', {
-                            text: 'Delete',
+                            text: '\u0418\u0437\u0442\u0440\u0438\u0439',
                             iconCls: 'icon-delete',
                             handler: function(){
                                 var selection = Ext.getCmp( 'items-table' ).getView().getSelectionModel().getSelection()[0];

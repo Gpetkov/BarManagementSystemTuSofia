@@ -2,12 +2,13 @@
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	<persistence-unit name="BarManagementSystem" transaction-type="JTA">
 	    <provider>org.hibernate.ejb.HibernatePersistence</provider>
-	    <jta-data-source>jdbc/BAR_MANAGEMENT_SYSTEM</jta-data-source>
+	    <jta-data-source>jdbs/bar_management_my_sql</jta-data-source>
 	    <class>com.tu.university.barmanagement.model.Item</class>
 	    <class>com.tu.university.barmanagement.model.Order</class>
 	    <class>com.tu.university.barmanagement.model.OrderStatus</class>
 	    <class>com.tu.university.barmanagement.model.Table</class>
 	    <class>com.tu.university.barmanagement.model.User</class>
+	    <class>com.tu.university.barmanagement.model.ItemType</class>
 	    <class>com.tu.university.barmanagement.model.OrderToItem</class>
 	    <properties>
 			<property name="hibernate.hbm2ddl.auto" value="update" />

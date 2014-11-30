@@ -19,7 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
-import com.tu.university.barmanagement.controler.UserControler;
+import com.tu.university.barmanagement.controller.UserController;
 import com.tu.university.barmanagement.managers.OrderToItemManager;
 import com.tu.university.barmanagement.model.OrderToItem;
 import com.tu.university.barmanagement.result.JsonObject;
@@ -36,7 +36,7 @@ public class OrderToItemResource {
 	OrderToItemManager em;
 
 	@EJB
-	private UserControler userControl;
+	private UserController userControl;
 
 	/**
 	 * Default constructor.

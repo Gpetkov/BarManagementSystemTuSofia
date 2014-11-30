@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
-import com.tu.university.barmanagement.controler.UserControler;
+import com.tu.university.barmanagement.controller.UserController;
 import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.TableManager;
 import com.tu.university.barmanagement.model.Table;
@@ -39,7 +39,7 @@ public class TableResource {
 	TableManager em;
 
 	@EJB
-	private UserControler userControl;
+	private UserController userControl;
 
 	/**
 	 * Default constructor.

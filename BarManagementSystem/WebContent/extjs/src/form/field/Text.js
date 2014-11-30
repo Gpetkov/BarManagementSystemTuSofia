@@ -179,7 +179,7 @@ Ext.define('Ext.form.field.Text', {
      * @cfg {String} blankText
      * The error text to display if the **{@link #allowBlank}** validation fails
      */
-    blankText : 'This field is required',
+    blankText : '\u0422\u043E\u0432\u0430 \u043F\u043E\u043B\u0435 \u0435 \u0437\u0430\u0434\u044A\u043B\u0436\u0438\u0442\u0435\u043B\u043D\u043E.',
     //</locale>
 
     /**

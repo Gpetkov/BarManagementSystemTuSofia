@@ -1,5 +1,6 @@
 package com.tu.university.barmanagement.resources;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
-import com.tu.university.barmanagement.controler.UserControler;
+import com.tu.university.barmanagement.controller.UserController;
 import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.UserManager;
 import com.tu.university.barmanagement.model.User;
@@ -39,7 +40,7 @@ public class UserResource {
 	UserManager em;
 
 	@EJB
-	private UserControler userControl;
+	private UserController userControl;
 
 	/**
 	 * Default constructor.
@@ -152,6 +153,17 @@ public class UserResource {
 				return result.toJson();
 			} else {
 				usrNew = JsonObject.parseJson(user, User.class);
+				MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		        byte[] hash = digest.digest(usrNew.getUsrPassword().getBytes("UTF-8"));
+		        StringBuffer hexString = new StringBuffer();
+
+		        for (int i = 0; i < hash.length; i++) {
+		            String hex = Integer.toHexString(0xff & hash[i]);
+		            if(hex.length() == 1) hexString.append('0');
+		            hexString.append(hex);
+		        }
+
+				usrNew.setUsrPassword(hexString.toString());
 				usrOriginal.update(usrNew);
 			}
 		} catch (JsonSyntaxException e) {
@@ -240,6 +252,17 @@ public class UserResource {
 			} else {
 				User userCreate = this.userControl.getCurrentUser();
 				usr.setUserCreated(userCreate);
+				MessageDigest digest = MessageDigest.getInstance("SHA-256");
+		        byte[] hash = digest.digest(usr.getUsrPassword().getBytes("UTF-8"));
+		        StringBuffer hexString = new StringBuffer();
+
+		        for (int i = 0; i < hash.length; i++) {
+		            String hex = Integer.toHexString(0xff & hash[i]);
+		            if(hex.length() == 1) hexString.append('0');
+		            hexString.append(hex);
+		        }
+
+		        usr.setUsrPassword(hexString.toString());
 				Integer id = em.addUser(usr);
 				usr.setUsrId(id);
 				System.out.println("After add");

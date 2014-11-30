@@ -21,7 +21,7 @@ Ext.define('MyDesktop.Settings', {
     ],
 
     layout: 'anchor',
-    title: 'Change Settings',
+    title: '\u041F\u0440\u043E\u043C\u0435\u043D\u0438 \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438\u0442\u0435',
     modal: true,
     width: 640,
     height: 480,
@@ -38,8 +38,8 @@ Ext.define('MyDesktop.Settings', {
         me.tree = me.createTree();
 
         me.buttons = [
-            { text: 'OK', handler: me.onOK, scope: me },
-            { text: 'Cancel', handler: me.close, scope: me }
+            { text: '\u0414\u043E\u0431\u0440\u0435', handler: me.onOK, scope: me },
+            { text: '\u041E\u0442\u043A\u0430\u0437', handler: me.close, scope: me }
         ];
 
         me.items = [
@@ -51,7 +51,7 @@ Ext.define('MyDesktop.Settings', {
                     me.tree,
                     {
                         xtype: 'panel',
-                        title: 'Preview',
+                        title: '\u041F\u0440\u0435\u0433\u043B\u0435\u0434',
                         region: 'center',
                         layout: 'fit',
                         items: [ me.preview ]
@@ -60,7 +60,7 @@ Ext.define('MyDesktop.Settings', {
             },
             {
                 xtype: 'checkbox',
-                boxLabel: 'Stretch to fit',
+                boxLabel: '\u0420\u0430\u0437\u0442\u0435\u0433\u043B\u0438 \u0432\u044A\u0440\u0445\u0443 \u0435\u043A\u0440\u0430\u043D\u0430',
                 checked: me.stretch,
                 listeners: {
                     change: function (comp) {
@@ -81,11 +81,11 @@ Ext.define('MyDesktop.Settings', {
         }
 
         var tree = new Ext.tree.Panel({
-            title: 'Desktop Background',
+            title: '\u0418\u0437\u0433\u043B\u0435\u0434 \u043D\u0430 \u0440\u0430\u0431\u043E\u0442\u043D\u0438\u044F \u043F\u043B\u043E\u0442',
             rootVisible: false,
             lines: false,
             autoScroll: true,
-            width: 150,
+            width: 180,
             region: 'west',
             split: true,
             minWidth: 100,

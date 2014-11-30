@@ -53,6 +53,7 @@ public class Order implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordr_table_id")
 	private Table bmTable;
+	
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ordr_barman_id")

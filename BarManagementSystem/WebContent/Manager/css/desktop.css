@@ -25,7 +25,8 @@
     position: relative;
     width: 150px;
     height: 25px;
-    background-image: url(../images/powered-by-ext-js.png);
+    /*background-image: url(../images/powered-by-ext-js.png);*/
+    background-image: none;
     background-repeat: no-repeat;
 }
 
@@ -272,6 +273,9 @@
 
 .icon-grid {
     background-image:url( ../images/grid.png ) !important;
+}
+.icon-mychart {
+    background-image:url( ../images/chart48x48.png ) !important;
 }
 .add {
     background-image:url(../../shared/icons/fam/add.gif) !important;

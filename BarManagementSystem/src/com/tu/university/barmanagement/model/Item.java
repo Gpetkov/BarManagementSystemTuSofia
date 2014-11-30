@@ -44,8 +44,9 @@ public class Item implements Serializable {
 	@Column(name = "itm_price")
 	private double itmPrice;
 
-	@Column(name = "itm_type")
-	private String itmType;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "itm_type")
+	private ItemType itemType;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "itm_created_by_bm_user_id")
@@ -106,12 +107,12 @@ public class Item implements Serializable {
 		this.itmPrice = itmPrice;
 	}
 
-	public String getItmType() {
-		return this.itmType;
+	public ItemType getItmType() {
+		return this.itemType;
 	}
 
-	public void setItmType(String itmType) {
-		this.itmType = itmType;
+	public void setItmType(ItemType itmType) {
+		this.itemType = itmType;
 	}
 
 	public User getUserCreated() {
@@ -141,6 +142,8 @@ public class Item implements Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
+				+ ((itemType == null) ? 0 : itemType.hashCode());
+		result = prime * result
 				+ ((itmDateCreated == null) ? 0 : itmDateCreated.hashCode());
 		result = prime * result
 				+ ((itmDateUpdated == null) ? 0 : itmDateUpdated.hashCode());
@@ -149,7 +152,6 @@ public class Item implements Serializable {
 		long temp;
 		temp = Double.doubleToLongBits(itmPrice);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		result = prime * result + ((itmType == null) ? 0 : itmType.hashCode());
 		result = prime * result
 				+ ((userCreated == null) ? 0 : userCreated.hashCode());
 		result = prime * result
@@ -165,6 +167,11 @@ public class Item implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Item other = (Item) obj;
+		if (itemType == null) {
+			if (other.itemType != null)
+				return false;
+		} else if (!itemType.equals(other.itemType))
+			return false;
 		if (itmDateCreated == null) {
 			if (other.itmDateCreated != null)
 				return false;
@@ -188,11 +195,6 @@ public class Item implements Serializable {
 		if (Double.doubleToLongBits(itmPrice) != Double
 				.doubleToLongBits(other.itmPrice))
 			return false;
-		if (itmType == null) {
-			if (other.itmType != null)
-				return false;
-		} else if (!itmType.equals(other.itmType))
-			return false;
 		if (userCreated == null) {
 			if (other.userCreated != null)
 				return false;
@@ -205,5 +207,4 @@ public class Item implements Serializable {
 			return false;
 		return true;
 	}
-	
 }

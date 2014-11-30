@@ -95508,16 +95508,16 @@ Ext.define('Ext.grid.RowEditor', {
     ],
 
     
-    saveBtnText  : 'Update',
+    saveBtnText  : '\u0417\u0430\u043F\u0430\u0437\u0438',
     
     
-    cancelBtnText: 'Cancel',
+    cancelBtnText: '\u0418\u0437\u043B\u0435\u0437',
     
     
-    errorsText: 'Errors',
+    errorsText: '\u0413\u0440\u0435\u0448\u043A\u0438',
     
     
-    dirtyText: 'You need to commit or cancel your changes',
+    dirtyText: '\u0422\u0440\u044F\u0431\u0432\u0430 \u0434\u0430 \u0437\u0430\u043F\u0430\u0437\u0438\u0442\u0435 \u0438\u043B\u0438 \u0434\u0430 \u043E\u0442\u0445\u0432\u044A\u0440\u043B\u0438\u0442\u0435 \u0432\u0430\u0448\u0438\u0442\u0435 \u043F\u0440\u043E\u043C\u0435\u043D\u0438.',
     
 
     lastScrollLeft: 0,

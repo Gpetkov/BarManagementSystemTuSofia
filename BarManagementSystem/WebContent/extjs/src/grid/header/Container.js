@@ -61,16 +61,16 @@ Ext.define('Ext.grid.header.Container', {
      */
 
     //<locale>
-    sortAscText: 'Sort Ascending',
+    sortAscText: '\u0421\u043E\u0440\u0442\u0438\u0440\u0430\u0439 \u043F\u043E \u0432\u044A\u0437\u0445\u043E\u0434\u044F\u0449 \u0440\u0435\u0434',
     //</locale>
     //<locale>
-    sortDescText: 'Sort Descending',
+    sortDescText: '\u0421\u043E\u0440\u0442\u0438\u0440\u0430\u0439 \u043F\u043E \u043D\u0438\u0437\u0445\u043E\u0434\u044F\u0449 \u0440\u0435\u0434',
     //</locale>
     //<locale>
-    sortClearText: 'Clear Sort',
+    sortClearText: '\u0411\u0435\u0437 \u0441\u043E\u0440\u0442\u0438\u0440\u0430\u043D\u0435',
     //</locale>
     //<locale>
-    columnsText: 'Columns',
+    columnsText: '\u041A\u043E\u043B\u043E\u043D\u0438',
     //</locale>
 
     headerOpenCls: Ext.baseCSSPrefix + 'column-header-open',

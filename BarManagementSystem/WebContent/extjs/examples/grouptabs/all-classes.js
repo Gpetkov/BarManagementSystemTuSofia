@@ -95812,13 +95812,13 @@ Ext.define('Ext.grid.RowEditor', {
     saveBtnText  : 'Update',
     //</locale>
     //<locale>
-    cancelBtnText: 'Cancel',
+    cancelBtnText: 'Cancle',
     //</locale>
     //<locale>
     errorsText: 'Errors',
     //</locale>
     //<locale>
-    dirtyText: 'You need to commit or cancel your changes',
+    dirtyText: 'You have to commit or cancle your changes',
     //</locale>
 
     lastScrollLeft: 0,

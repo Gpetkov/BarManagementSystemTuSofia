@@ -44,7 +44,7 @@ Ext.define('MyDesktop.GridOrders', {
 
     init : function(){
         this.launcher = {
-            text: 'View Orders',
+            text: '\u041F\u0440\u0435\u0433\u043B\u0435\u0434 \u043D\u0430 \u043F\u043E\u0440\u044A\u0447\u043A\u0438\u0442\u0435',
             iconCls:'icon-grid'
         };
     },
@@ -55,8 +55,8 @@ Ext.define('MyDesktop.GridOrders', {
         if(!win){
             win = desktop.createWindow({
                 id: 'grid-orders',
-                title:'View Orders',
-                width:740,
+                title:'\u041F\u0440\u0435\u0433\u043B\u0435\u0434 \u043D\u0430 \u043F\u043E\u0440\u044A\u0447\u043A\u0438\u0442\u0435',
+                width:861,
                 height:480,
                 iconCls: 'icon-grid',
                 animCollapse:false,
@@ -84,8 +84,8 @@ Ext.define('MyDesktop.GridOrders', {
                             }
                         }),
                         columns: [{
-                            text: 'ID',
-                            width: 40,
+                            text: '\u0423\u043D\u0438\u043A\u0430\u043B\u0435\u043D \u043D\u043E\u043C\u0435\u0440',
+                            width: 90,
                             sortable: true,
                             dataIndex: 'ordId',
                             renderer: function(v){
@@ -95,16 +95,17 @@ Ext.define('MyDesktop.GridOrders', {
                                 return v;
                             }
                         }, {
-                            header: 'Table',
-                            width: 40,
+                            header: '\u041C\u0430\u0441\u0430',
+                            width: 60,
                             sortable: true,
                             dataIndex: 'tableId',
                             field: {
                             	xtype: 'textfield'
                             }
                         }, {
-                            header: 'Waiter',
-                            flex: 1,
+                            header: '\u0421\u0435\u0440\u0432\u0438\u0442\u044C\u043E\u0440',
+//                            flex: 1,
+                            width: 100,
                             sortable: true,
                             dataIndex: 'userCreated',
                         	renderer: function( v ){
@@ -117,8 +118,9 @@ Ext.define('MyDesktop.GridOrders', {
                             	xtype: 'textfield'
                             }
                         }, {
-                            header: 'Barman',
-                            flex: 1,
+                            header: '\u0411\u0430\u0440\u043C\u0430\u043D',
+                            width: 100,
+//                            flex: 1,
                             sortable: true,
                             dataIndex: 'orderBarman',
                         	renderer: function( v ){
@@ -131,7 +133,7 @@ Ext.define('MyDesktop.GridOrders', {
                             	xtype: 'textfield'
                             }
                         }, {
-                            header: 'Status',
+                            header: '\u0421\u0442\u0430\u0442\u0443\u0441',
                             width: 70,
                             sortable: true,
                             dataIndex: 'bmOrderStatus',
@@ -145,8 +147,8 @@ Ext.define('MyDesktop.GridOrders', {
                             	xtype: 'textfield'
                             }
                         }, {
-                            header: 'Items',
-                            width: 40,
+                            header: '\u041F\u0440\u043E\u0434\u0443\u043A\u0442\u0438',
+                            width: 120,
                             sortable: true,
                             dataIndex: 'bmItems',
                         	renderer: function( v ){
@@ -159,7 +161,7 @@ Ext.define('MyDesktop.GridOrders', {
                             	xtype: 'textfield'
                             }
                         }, {
-                            header: 'Price',
+                            header: '\u0426\u0435\u043D\u0430',
                             width: 50,
                             sortable: true,
                             dataIndex: 'bmItems',
@@ -178,7 +180,7 @@ Ext.define('MyDesktop.GridOrders', {
                             	xtype: 'textfield'
                             }
                         }, {
-                            header: 'Created',
+                            header: '\u0421\u044A\u0437\u0434\u0430\u0434\u0435\u043D\u0430',
                             width: 150,
                             sortable: true,
                             dataIndex: 'ordDateCreated',
@@ -186,7 +188,7 @@ Ext.define('MyDesktop.GridOrders', {
                             	xtype: 'datefield'
                             }
                         }, {
-                            header: 'Updated',
+                            header: '\u041E\u0431\u043D\u043E\u0432\u0435\u043D\u0430',
                             width: 150,
                             sortable: true,
                             dataIndex: 'ordDateUpdated',
@@ -195,7 +197,7 @@ Ext.define('MyDesktop.GridOrders', {
                             }
                         }],
                         tbar:[{
-                            text: 'Refresh',
+                            text: '\u041E\u0431\u043D\u043E\u0432\u0438',
                             iconCls: 'icon-refresh',
                             handler: function(){
                             	Ext.getCmp( 'orders-table' ).getStore().reload();

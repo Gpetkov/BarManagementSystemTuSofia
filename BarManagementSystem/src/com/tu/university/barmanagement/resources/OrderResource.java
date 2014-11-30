@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 
 import com.google.gson.JsonSyntaxException;
-import com.tu.university.barmanagement.controler.UserControler;
+import com.tu.university.barmanagement.controller.UserController;
 import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.OrderManager;
 import com.tu.university.barmanagement.managers.OrderStatusManager;
@@ -51,7 +51,7 @@ public class OrderResource {
 	OrderStatusManager em3;
 
 	@EJB
-	private UserControler userControl;
+	private UserController userControl;
 	/**
 	 * Default constructor.
 	 */
@@ -123,6 +123,41 @@ public class OrderResource {
 		return result.toJson();
 	}
 
+	/**
+	 * Retrieves representation of an Orders's instances
+	 * 
+	 * @return the result of the operation with message and status
+	 * @see Message
+	 * @see Result
+	 */
+	@GET
+	@RolesAllowed({})
+	@Path("notfinished")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String geAllNotFinishedOrders() {
+		Message message = new Message();
+		List<Message> messages = new ArrayList<Message>();
+		Result<List<Order>> result = new Result<List<Order>>();
+		try {
+			result.setData(em.getAllOrdersWithStatusNotFinished());
+			message.setData("The Orders was retrieved successfully.");
+			message.setStatus(Message.INFO);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.SUCCESS);
+		} catch (Exception e) {
+			message.setData("Problem occured while retrieving the Orders.");
+			message.setStatus(Message.ERROR);
+			messages.add(message);
+			result.setMessages(messages);
+			result.setStatus(Result.FAIL);
+			return result.toJson();
+		}
+		return result.toJson();
+	}
+	
+	
+	
 	/**
 	 * Retrieves representation of an Orders's instances
 	 * 
@@ -437,6 +472,8 @@ public class OrderResource {
 			} else {
 				User usr = this.userControl.getCurrentUser();
 				ordrOriginal.setOrderBarman(usr);
+				OrderStatus os = em3.getOrderStatusById(3);
+				ordrOriginal.setBmOrderStatus(os);
 			}
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());

@@ -152,10 +152,10 @@ Ext.define('Ext.window.MessageBox', {
      *     Ext.window.MessageBox.buttonText.yes = "oui"; //french
      */
     buttonText: {
-        ok: 'OK',
-        yes: 'Yes',
-        no: 'No',
-        cancel: 'Cancel'
+        ok: '\u0414\u043E\u0431\u0440\u0435',
+        yes: '\u0414\u0430',
+        no: '\u041D\u0435',
+        cancel: '\u041E\u0442\u043A\u0430\u0437'
     },
     //</locale>
 
@@ -167,7 +167,7 @@ Ext.define('Ext.window.MessageBox', {
     titleText: {
         confirm: 'Confirm',
         prompt: 'Prompt',
-        wait: 'Loading...',
+        wait: '\u0417\u0430\u0440\u0435\u0436\u0434\u0430\u043D\u0435...',
         alert: 'Attention'
     },
     //</locale>
