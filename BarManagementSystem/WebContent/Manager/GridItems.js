@@ -9,7 +9,11 @@ Ext.define('ItemType', {
 	fields : [ {
 		name : 'itmType',
 		type : 'string'
-	} ]
+	},
+	{
+		name : 'id',
+		type : 'int'
+	}]
 });
 
 Ext.define('Item', {
@@ -209,7 +213,8 @@ Ext
 															lazyRender : true,
 															listClass : 'x-combo-list-small',
 							                            	displayField: 'itmType',
-							                                valueField: 'itmType',
+							                                valueField: 'id',
+							                                	hiddenName: 'id',
 														}
 													} ],
 											tbar : [

@@ -156,7 +156,17 @@ Ext.define('MyDesktop.GridOrders', {
                                     } else {
                                         verb = name + 'd';
                                     }
+                                },
+                                
+                                load: function( store ){
+                                	 store.filterBy(function(record, id){
+                                		    if(record.get("orderStatusId") == 2 || record.get("orderStatusId") == 3){
+                                		      return true;
+                                		    }    
+                                		    return false;
+                                		}, this);
                                 }
+                                
                             }
                         }),
                         plugins: [rowEditing = Ext.create('Ext.grid.plugin.RowEditing')],
@@ -175,7 +185,7 @@ Ext.define('MyDesktop.GridOrders', {
                             header: '\u041C\u0430\u0441\u0430',
                             flex: 1,
                             sortable: true,
-                            dataIndex: 'tblNumber',
+                            dataIndex: 'tableId',
                             field: {
                             	xtype: 'combobox',
                             	typeAhead : true,

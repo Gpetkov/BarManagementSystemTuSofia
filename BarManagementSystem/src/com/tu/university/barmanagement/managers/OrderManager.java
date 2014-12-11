@@ -59,7 +59,7 @@ public class OrderManager {
 	public List<Order> getAllOrdersWithStatusNotFinished() {
 		List<Order> result = new ArrayList<Order>();
 		javax.persistence.Query q = em
-				.createNativeQuery("Select o.ord_id, t.t.tbl_number, o.ordr_status_id from bm_order o left join bm_order_status "
+				.createNativeQuery("Select o.ord_id, t.tbl_number, o.ordr_status_id from bm_order o left join bm_order_status "
 						+ "os on o.ordr_status_id = os.ordst_id left join bm_table t on o.ordr_table_id=t.tbl_id where os.ordst_id != 1");
 
 		List<Object[]> resultList = q.getResultList();

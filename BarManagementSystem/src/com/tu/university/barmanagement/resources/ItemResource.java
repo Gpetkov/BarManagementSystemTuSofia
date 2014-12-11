@@ -23,7 +23,10 @@ import com.google.gson.JsonSyntaxException;
 import com.tu.university.barmanagement.controller.UserController;
 import com.tu.university.barmanagement.exception.GetUserException;
 import com.tu.university.barmanagement.managers.ItemManager;
+import com.tu.university.barmanagement.managers.ItemTypeManager;
 import com.tu.university.barmanagement.model.Item;
+import com.tu.university.barmanagement.model.ItemDTO;
+import com.tu.university.barmanagement.model.ItemType;
 import com.tu.university.barmanagement.model.User;
 import com.tu.university.barmanagement.result.JsonObject;
 import com.tu.university.barmanagement.result.Message;
@@ -37,7 +40,10 @@ public class ItemResource {
 	private UriInfo context;
 
 	@EJB
-	ItemManager em;
+	private ItemManager em;
+	
+	@EJB
+	private ItemTypeManager emType;
 
 	@EJB
 	private UserController userControl;
@@ -140,7 +146,7 @@ public class ItemResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	public String updateItem(@PathParam("id") Integer id, String item) {
 		Item itmOriginal = null;
-		Item itmNew = null;
+		ItemDTO itmNew = null;
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		Result<Item> result = new Result<Item>();
@@ -155,8 +161,14 @@ public class ItemResource {
 				result.setStatus(Result.SUCCESS);
 				return result.toJson();
 			} else {
-				itmNew = JsonObject.parseJson(item, Item.class);
-				itmOriginal.update(itmNew);
+				itmNew = JsonObject.parseJson(item, ItemDTO.class);
+				Item saveItem = new Item();
+				saveItem.setItmName(itmNew.getItmName());
+				saveItem.setItmPrice(itmNew.getItmPrice());
+				ItemType itemType = emType.getItemTypeById(itmNew.getItmType());
+				saveItem.setItmType(itemType);
+				
+				itmOriginal.update(saveItem);
 			}
 		} catch (JsonSyntaxException e) {
 			message.setData("Erro occured while parsing the Json Item to object. Please check the Json syntax.");
@@ -232,13 +244,13 @@ public class ItemResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public String addItem(String item) {
-		Item itm = null;
+		ItemDTO itmDto = null;
 		Message message = new Message();
 		List<Message> messages = new ArrayList<Message>();
 		final Result<Item> result = new Result<Item>();
 		try {
-			itm = JsonObject.parseJson(item, Item.class);
-			if (itm == null) {
+			itmDto = JsonObject.parseJson(item, ItemDTO.class);
+			if (itmDto == null) {
 				message.setData("The Json parsing returned a null object");
 				message.setStatus(Message.ERROR);
 				messages.add(message);
@@ -247,16 +259,21 @@ public class ItemResource {
 			} else {
 				//Integer id;
 				User usr = this.userControl.getCurrentUser();
-				itm.setUserCreated(usr);
-				Integer id = em.addItem(itm);
-				itm.setItmId(id);
+				Item saveItem = new Item();
+				saveItem.setItmName(itmDto.getItmName());
+				saveItem.setItmPrice(itmDto.getItmPrice());
+				ItemType itemType = emType.getItemTypeById(itmDto.getItmType());
+				saveItem.setItmType(itemType);
+				saveItem.setUserCreated(usr);
+				Integer id = em.addItem(saveItem);
+				saveItem.setItmId(id);
 				System.out.println("After add");
 				message.setData("The Item was added successfully.");
 				message.setStatus(Message.INFO);
 				messages.add(message);
 				result.setMessages(messages);
 				result.setStatus(Result.SUCCESS);
-				result.setData(itm);
+				result.setData(saveItem);
 			}
 		} catch (GetUserException e) {
 			message.setData(e.getMessage());
@@ -276,7 +293,7 @@ public class ItemResource {
 			result.setStatus(Result.FAIL);
 			return result.toJson();
 		} catch (EJBTransactionRolledbackException e) {
-			message.setData("The Item with Itemname: \"" + itm.getItmName()
+			message.setData("The Item with Itemname: \"" + itmDto.getItmName()
 					+ "\" already exists OR there is problem with JPA persist.");
 			message.setStatus(Message.ERROR);
 			messages.add(message);

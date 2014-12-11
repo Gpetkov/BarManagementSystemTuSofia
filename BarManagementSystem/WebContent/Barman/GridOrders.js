@@ -41,7 +41,7 @@ Ext.onReady(function(){
 			st.each( function( rec ){
 				var recTime = Ext.util.Format.date( rec.data.ordDateUpdated, 'U' ),
 					curTime = Ext.util.Format.date( new Date(), 'U' );
-				if ( 150 == rec.data.orderStatusId && curTime - recTime > 5 * 60 )
+				if ( 3 == rec.data.bmOrderStatus.ordstId && curTime - recTime > 5 * 60 )
 				{
 					Ext.create('widget.uxNotification', {
 						position: 'br',
@@ -193,7 +193,7 @@ Ext.define('MyDesktop.GridOrders', {
                             },
                             listeners: {
                             	load: function( store ){
-                            		store.filter( 'orderStatusId', 150 );
+                            		//store.filter( 'orderStatusId', 150 );
                             	}
                             }
                         }),
@@ -241,6 +241,7 @@ Ext.define('MyDesktop.GridOrders', {
                                 	    }
                                 	});
                                 }
+                                Ext.getCmp('detailPanel').update('\u041C\u043E\u043B\u044F \u0438\u0437\u0431\u0435\u0440\u0435\u0442\u0435 \u043F\u043E\u0440\u044A\u0447\u043A\u0430, \u0437\u0430 \u0434\u0430 \u0432\u0438\u0434\u0438\u0442\u0435 \u043F\u044A\u043B\u043D\u0430\u0442\u0430 \u0438\u043D\u0444\u043E\u0440\u043C\u0430\u0446\u0438\u044F.');
                             }
                         }],
                         listeners:{

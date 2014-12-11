@@ -30,7 +30,7 @@ import javax.persistence.PreUpdate;
 @NamedQueries({
 		@NamedQuery(name = "Order.getAll", query = "Select o from Order o"),
 		@NamedQuery(name = "findOrdersWithoutBarman", query = "SELECT o FROM Order o WHERE o.orderBarman IS NULL"),
-		@NamedQuery(name = "findBarmanOrders", query = "SELECT o FROM Order o WHERE o.orderBarman =:ordbarman")
+		@NamedQuery(name = "findBarmanOrders", query = "SELECT o FROM Order o WHERE o.orderBarman =:ordbarman and o.bmOrderStatus.ordstId = 3")
 		})
 public class Order implements Serializable {
 	private static final long serialVersionUID = 1L;

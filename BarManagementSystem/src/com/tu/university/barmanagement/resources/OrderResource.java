@@ -247,7 +247,6 @@ public class OrderResource {
 		}
 		return result.toJson();
 	}
-	// ----------------------------------------------------------------//
 
 	@GET
 	@RolesAllowed({"waiter", "manager"})
@@ -287,7 +286,7 @@ public class OrderResource {
 		return result.toJson();
 	}
 
-	// ----------------------------------------------------------------//
+
 	/**
 	 * PUT method for updating an instance of Order
 	 * 
