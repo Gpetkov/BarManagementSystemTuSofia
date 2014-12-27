@@ -41,7 +41,7 @@ Ext.onReady(function(){
 			st.each( function( rec ){
 				var recTime = Ext.util.Format.date( rec.data.ordDateUpdated, 'U' ),
 					curTime = Ext.util.Format.date( new Date(), 'U' );
-				if ( 3 == rec.data.bmOrderStatus.ordstId && curTime - recTime > 5 * 60 )
+				if (curTime - recTime > 1 * 60 )
 				{
 					Ext.create('widget.uxNotification', {
 						position: 'br',
@@ -51,7 +51,7 @@ Ext.onReady(function(){
 						closable: false,
 						title: '\u041F\u043E\u0431\u044A\u0440\u0437\u0430\u0439!',
 						spacing: 20,
-						html: '\u041F\u043E\u0440\u0447\u044A\u0447\u043A\u0430 \u043D\u043E\u043C\u0435\u0440' + rec.data.ordId + ' \u0435 \u0437\u0430\u043A\u044A\u0441\u043D\u044F\u043B\u0430!',
+						html: '\u041F\u043E\u0440\u0447\u044A\u0447\u043A\u0430 \u043D\u043E\u043C\u0435\u0440 ' + rec.data.ordId + ' \u0435 \u0437\u0430\u043A\u044A\u0441\u043D\u044F\u043B\u0430!',
 						slideInDuration: 800,
 						slideBackDuration: 1500,
 						autoCloseDelay: 4000,
@@ -60,6 +60,25 @@ Ext.onReady(function(){
 						slideBackAnimation: 'elasticIn'
 					}).show();
 				}
+				/*if (curTime - recTime > 0.5 * 60 )
+				{
+					Ext.create('widget.uxNotification', {
+						position: 'br',
+						useXAxis: false,
+						cls: 'ux-notification-light',
+						iconCls: 'ux-notification-icon-information',
+						closable: false,
+						title: 'Your time is up!',
+						spacing: 20,
+						html: rec.data.ordId + ' is late!',
+						slideInDuration: 800,
+						slideBackDuration: 1500,
+						autoCloseDelay: 4000,
+						paddingY: 30,
+						slideInAnimation: 'elasticIn',
+						slideBackAnimation: 'elasticIn'
+					}).show();
+				}*/
 			} );
 		}
 		setTimeout( checkOrderStatuses, 1000 );
@@ -162,6 +181,13 @@ Ext.define('MyDesktop.GridOrders', {
                                 	    }
                                 	});
                                 }
+                            }
+                        },
+                        {
+                            text: '\u041E\u0431\u043D\u043E\u0432\u0438',
+                            iconCls: 'icon-refresh',
+                            handler: function(){
+                            	Ext.getCmp( 'orders-table' ).getStore().reload();
                             }
                         }]
                     },{
