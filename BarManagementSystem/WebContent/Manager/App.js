@@ -193,7 +193,7 @@ Ext
 					},
 
 					onLogout : function() {
-						Ext.Msg.confirm('Logout',
+						Ext.Msg.confirm('\u0418\u0437\u043B\u0435\u0437',
 								'\u0421\u0438\u0433\u0443\u0440\u0435\u043D \u043B\u0438 \u0441\u0442\u0435, \u0447\u0435 \u0438\u0441\u043A\u0430\u0442\u0435 \u0434\u0430 \u0438\u0437\u043B\u0435\u0437\u0435\u0442\u0435?', function(
 										answer) {
 									if ('yes' == answer) {

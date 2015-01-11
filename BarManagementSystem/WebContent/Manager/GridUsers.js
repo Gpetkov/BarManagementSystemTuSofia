@@ -216,6 +216,9 @@ Ext
 														header : '\u0410\u043A\u0442\u0438\u0432\u0435\u043D',
 														width : 77,
 														dataIndex : 'usrStatus',
+														 renderer: function(value) {
+														        return "<input disabled=\"disabled\" type='checkbox'" + (value ? "checked='checked'" : "") + ">";
+														    },
 														field : {
 															xtype : 'checkbox'
 														}

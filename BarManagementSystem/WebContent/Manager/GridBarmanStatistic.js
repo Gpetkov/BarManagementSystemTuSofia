@@ -45,7 +45,7 @@ Ext
 
 					createWindow : function() {
 						var desktop = this.app.getDesktop();
-						var win = desktop.getWindow('grid-waiterStatistic');
+						var win = desktop.getWindow('grid-barmanStatistic');
 						if (!win) {
 							win = desktop
 									.createWindow({
